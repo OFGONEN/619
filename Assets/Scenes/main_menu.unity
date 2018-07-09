@@ -203,7 +203,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 8ab8bbe61eb842b45931786823acd2e0, type: 3}
+  m_Sprite: {fileID: 21300000, guid: f20330c0dc6d6134bb6d1dd508bda7b5, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -229,8 +229,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   image: {fileID: 310535750}
-  normal: {fileID: 21300000, guid: 8ab8bbe61eb842b45931786823acd2e0, type: 3}
-  negative: {fileID: 21300000, guid: a1159a5e3550c954e9b064d861726d8f, type: 3}
+  normal: {fileID: 21300000, guid: f20330c0dc6d6134bb6d1dd508bda7b5, type: 3}
+  negative: {fileID: 21300000, guid: de3f3294ee3e9ad42af2bfeff5681885, type: 3}
 --- !u!1 &378567226
 GameObject:
   m_ObjectHideFlags: 0
@@ -1411,7 +1411,7 @@ RectTransform:
   m_GameObject: {fileID: 1993914787}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.0500002, y: 1.549997, z: 1}
   m_Children: []
   m_Father: {fileID: 957651186}
   m_RootOrder: 1
@@ -1448,7 +1448,7 @@ MonoBehaviour:
     m_FadeDuration: 0.1
   m_SpriteState:
     m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 21300000, guid: a1159a5e3550c954e9b064d861726d8f, type: 3}
+    m_PressedSprite: {fileID: 21300000, guid: de3f3294ee3e9ad42af2bfeff5681885, type: 3}
     m_DisabledSprite: {fileID: 0}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
