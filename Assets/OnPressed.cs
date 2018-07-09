@@ -5,7 +5,7 @@ using UnityEngine;
 using System.Collections;
 using UnityEngine.EventSystems;
 
-public class OnPressed : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
+public class OnPressed : MonoBehaviour, IPointerDownHandler, IPointerUpHandler , IPointerExitHandler
 {
 
 	#region Variables
@@ -22,21 +22,37 @@ public class OnPressed : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 	public void OnPointerDown( PointerEventData eventData )
 	{
 		Debug.Log( gameObject.name + " Pointer Down" );
-
-		start.PointerDown();
-		how2play.PointerDown();
-		options.PointerDown();
-		wtfAreWe.PointerDown();
+		GoNegative();
 	}
 
 	public void OnPointerUp( PointerEventData eventData )
 	{
-		Debug.Log( gameObject.name + " Pointer Down" );
+		Debug.Log( gameObject.name + " Pointer Up" );
+		GoNormal();
+	}
 
+	public void OnPointerExit( PointerEventData eventData )
+	{
+		Debug.Log( gameObject.name + " Pointer Exit" );
+		GoNormal();		
+	}
+
+	void GoNegative()
+	{
+		start.PointerDown();
+		how2play.PointerDown();
+		options.PointerDown();
+		wtfAreWe.PointerDown();
+		Camera.main.backgroundColor = Color.black;
+	}
+
+	void GoNormal()
+	{
 		start.PointerUp();
 		how2play.PointerUp();
 		options.PointerUp();
 		wtfAreWe.PointerUp();
+		Camera.main.backgroundColor = Color.white;
 	}
 	#endregion
 }
