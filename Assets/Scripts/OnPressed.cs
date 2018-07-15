@@ -9,10 +9,10 @@ public class OnPressed : MonoBehaviour, IPointerDownHandler, IPointerUpHandler ,
 {
 
 	#region Variables
-	public SpriteChanger start;
-	public SpriteChanger how2play;
-	public SpriteChanger options;
-	public SpriteChanger wtfAreWe;
+	public ImageChanger start;
+	public ImageChanger how2play;
+	public ImageChanger options;
+	public ImageChanger wtfAreWe;
 
 	#endregion
 	
@@ -21,37 +21,34 @@ public class OnPressed : MonoBehaviour, IPointerDownHandler, IPointerUpHandler ,
 	#region Methods
 	public void OnPointerDown( PointerEventData eventData )
 	{
-		Debug.Log( gameObject.name + " Pointer Down" );
 		GoNegative();
 	}
 
 	public void OnPointerUp( PointerEventData eventData )
 	{
-		Debug.Log( gameObject.name + " Pointer Up" );
 		GoNormal();
 	}
 
 	public void OnPointerExit( PointerEventData eventData )
 	{
-		Debug.Log( gameObject.name + " Pointer Exit" );
 		GoNormal();		
 	}
 
 	void GoNegative()
 	{
-		start.PointerDown();
-		how2play.PointerDown();
-		options.PointerDown();
-		wtfAreWe.PointerDown();
+		start.ChangeToNegative();
+		how2play.ChangeToNegative();
+		options.ChangeToNegative();
+		wtfAreWe.ChangeToNegative();
 		Camera.main.backgroundColor = Color.black;
 	}
 
 	void GoNormal()
 	{
-		start.PointerUp();
-		how2play.PointerUp();
-		options.PointerUp();
-		wtfAreWe.PointerUp();
+		start.ChangeToNormal();
+		how2play.ChangeToNormal();
+		options.ChangeToNormal();
+		wtfAreWe.ChangeToNormal();
 		Camera.main.backgroundColor = Color.white;
 	}
 	#endregion

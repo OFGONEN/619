@@ -2,30 +2,26 @@
 Created By OFGONEN
 */
 using UnityEngine;
-using UnityEngine.UI;
 
 public class SpriteChanger : MonoBehaviour {
 
 	#region Variables
-	public Image image;
+	public Sprite sprite;
 	public Sprite normal;
 	public Sprite negative;
 	#endregion
 
 
 	#region Methods
-	public void PointerDown()
+	public void ChangeToNegative()
 	{
-		Debug.Log( gameObject.name + " Pointer Down" );
-
-		image.sprite = negative;
+		sprite = negative;
 	}
 
-	public void PointerUp()
+	public void ChangeToNormal()
 	{
-		Debug.Log( gameObject.name + " Pointer Down" );
-
-		image.sprite = normal;
+		sprite = normal;
 	}
 	#endregion
-	}
+
+}
