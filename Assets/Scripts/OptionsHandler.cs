@@ -9,6 +9,13 @@ public class OptionsHandler : MonoBehaviour {
 	#region Variables
 	public static OptionsHandler instace = null;
 
+	[Header("Avaliable Buttons")]
+	public bool soundControl;
+	public bool musicControl;
+	public bool tableSizeControl;
+	public bool playerNamesControl;
+
+
 	[Header("Buttons")]
 	public ImageChanger soundOn;
 	public ImageChanger soundOff;
@@ -73,10 +80,27 @@ public class OptionsHandler : MonoBehaviour {
 	#region HandleButtons
 	private void HandleButtons()
 	{
-		HandleSound();
-		HandleMusic();
-		HandleTableSize();
-		HandlePlayerNames();
+		if(soundControl)
+		{
+			HandleSound();
+		}
+
+		if( musicControl )
+		{
+			HandleMusic();
+		}
+
+		if( tableSizeControl )
+		{
+			HandleTableSize();
+
+		}
+
+		if( playerNamesControl )
+		{
+			HandlePlayerNames();
+
+		}
 	}
 
 	private void HandleSound()

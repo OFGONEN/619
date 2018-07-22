@@ -17,12 +17,15 @@ public class BoardMaker : MonoBehaviour {
 	private float startPointY;
 	private float cellScale;
 	private Vector2 positionToPut;
+
+	private Vector2 tableSize;
 	#endregion
 	
 	
 	void Start () 
 	{
-		BuildBoard( 12, 18 );
+		GetTableSize();
+		BuildBoard( (int)tableSize.x, ( int )tableSize.y );
 	}
 	
 	
@@ -54,6 +57,26 @@ public class BoardMaker : MonoBehaviour {
 		startPointX = ( 300 - pixelSize / 2 ) / 100;
 		startPointY = ( 450 - pixelSize / 2 ) / 100;
 		positionToPut = new Vector2( -startPointX, startPointY );
+	}
+
+	private void GetTableSize()
+	{
+		int tableNumber = PlayerPrefs.GetInt( "Table Size" );
+		if( tableNumber == 0 )
+		{
+			tableSize.x = 6;
+			tableSize.y = 9;
+		}
+		else if(tableNumber == 1 )
+		{
+			tableSize.x = 8;
+			tableSize.y = 12;
+		}
+		else if(tableNumber == 2 )
+		{
+			tableSize.x = 12;
+			tableSize.y = 18;
+		}
 	}
 	#endregion
 	
