@@ -10,8 +10,8 @@ public class Counter : MonoBehaviour {
 	public static Counter instance = null;
 	public Text counterText;
 
-	public int time_normal_round;
-	public int time_upsideDown_round;
+	public float time_normal_round;
+	public float time_upsideDown_round;
 	public float time_normal_toAdd;
 	public float time_upsideDown_toAdd;
 	public float time_upsideDown_comboAdd;

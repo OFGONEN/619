@@ -71,7 +71,6 @@ public class GameLogic : MonoBehaviour {
 			is_in_UpSideDown = false;
 			can_EndTurn = false;
 			counter_combo = 0;
-			
 		}
 	}
 
