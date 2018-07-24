@@ -6,26 +6,32 @@ using UnityEngine;
 public class BoardMaker : MonoBehaviour {
 
 	#region Variables
+	public static BoardMaker instance = null;
 	public GameObject cell;
 
 
-	const int PIXELLENGTHX = 300;
-	const int PIXELLENGTHY = 450;
-	const int PIXELSIZECELL = 100;
+	const int PIXEL_LENGTH_X = 600;
+	const int PIXEL_LENGTH_Y = 900;
+	const int PIXEL_SIZE_CELL = 100;
 
 	private float startPointX;
 	private float startPointY;
 	private float cellScale;
 	private Vector2 positionToPut;
-
-	private Vector2 tableSize;
 	#endregion
-	
-	
+
+	private void Awake()
+	{
+		if( instance == null )
+			instance = this;
+		else if( instance != this )
+			Destroy( gameObject );
+		
+	}
+
 	void Start () 
 	{
-		GetTableSize();
-		BuildBoard( (int)tableSize.x, ( int )tableSize.y );
+		BuildBoard( (int)GetTableSize().x, ( int )GetTableSize().y );
 	}
 	
 	
@@ -35,14 +41,15 @@ public class BoardMaker : MonoBehaviour {
 		DecideStartPoints( sizeX, sizeY );
 
 		GameObject instance;
-		for(int y = 0 ; y < sizeY ; y++ )
+		for(int x = 0 ; x < sizeX ; x++ )
 		{
-			for(int x = 0 ; x < sizeX ; x++ )
+			for(int y = 0 ; y < sizeY ; y++ )
 			{
 				instance = Instantiate( cell, positionToPut, Quaternion.identity );
-				instance.name = "" + y + "-" + x;
+				instance.name = "" + x + "-" + y;
 				instance.transform.SetParent( transform );
 				instance.transform.localScale = new Vector2( cellScale, cellScale );
+				GameLogic.instance.UpdateArrayCell( instance, x, y );
 				positionToPut.x = positionToPut.x + cellScale;
 			}
 			positionToPut.x = -startPointX;
@@ -52,32 +59,38 @@ public class BoardMaker : MonoBehaviour {
 
 	private void DecideStartPoints(int sizeX , int sizeY)
 	{
-		float pixelSize = 600 / sizeX;
-		cellScale = pixelSize / (float)PIXELSIZECELL;
-		startPointX = ( 300 - pixelSize / 2 ) / 100;
-		startPointY = ( 450 - pixelSize / 2 ) / 100;
+		float pixelSize = PIXEL_LENGTH_X / sizeY;
+		cellScale = pixelSize / PIXEL_SIZE_CELL;
+		startPointX = ( PIXEL_LENGTH_X / 2 - pixelSize / 2 ) / 100;
+		startPointY = ( PIXEL_LENGTH_Y / 2 - pixelSize / 2 ) / 100;
 		positionToPut = new Vector2( -startPointX, startPointY );
 	}
 
-	private void GetTableSize()
+	public Vector2 GetTableSize()
 	{
+		Vector2 tableSize;
+
 		int tableNumber = PlayerPrefs.GetInt( "Table Size" );
 		if( tableNumber == 0 )
 		{
-			tableSize.x = 6;
-			tableSize.y = 9;
+			tableSize.x = 9;
+			tableSize.y = 6;
 		}
 		else if(tableNumber == 1 )
 		{
-			tableSize.x = 8;
+			tableSize.x = 12;
+			tableSize.y = 8;
+		}
+		else 
+		{
+			tableSize.x = 18;
 			tableSize.y = 12;
 		}
-		else if(tableNumber == 2 )
-		{
-			tableSize.x = 12;
-			tableSize.y = 18;
-		}
+
+		return tableSize;
 	}
+
+	
 	#endregion
 	
 	}
