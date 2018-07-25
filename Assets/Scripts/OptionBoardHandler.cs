@@ -18,6 +18,15 @@ public class OptionBoardHandler : MonoBehaviour {
 			UIHandler.instance.ChangePlayerName( false );
 
 	}
+
+	public void ChangeToPlayerName()
+	{
+		int player = GameLogic.instance.GetCurrentPlayer();
+		if( player == 1 )
+			UIHandler.instance.ChangeToPlayerName(true);
+		else 
+			UIHandler.instance.ChangeToPlayerName(false);
+	}
 	#endregion
 
 }

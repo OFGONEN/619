@@ -34,9 +34,9 @@ public class UIAnimationHandler : MonoBehaviour {
 	public void CameraToogle(bool white)
 	{
 		if( white )
-			anim_camera.SetTrigger( "GoWhite" );
+			anim_camera.SetTrigger( "Go_White" );
 		else
-			anim_camera.SetTrigger( "GoBlack" );
+			anim_camera.SetTrigger( "Go_Black" );
 	}
 
 	public void GoUpsideDown( int player )

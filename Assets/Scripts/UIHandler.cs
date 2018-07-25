@@ -56,7 +56,7 @@ public class UIHandler : MonoBehaviour {
 			bar_option.ChangeToNormal();
 			button_option.gameObject.SetActive( false );
 			text_option.gameObject.SetActive( false );
-			text_player_name.gameObject.SetActive( false );
+			text_player_name.gameObject.SetActive( true );
 		}
 	}
 

@@ -152,7 +152,8 @@ public class GameLogic : MonoBehaviour {
 			//LookUpLeft();
 		}
 
-		DeclareScore();
+		if(is_finded_Score)
+			DeclareScore();
 	}
 
 	void DeclareScore()
@@ -182,6 +183,10 @@ public class GameLogic : MonoBehaviour {
 		BoardHandler.instance.ChangeCellSprite( array_cells[ cell1_X, cell1_Y ], 2 );
 		BoardHandler.instance.ChangeCellSprite( array_cells[ cell2_X, cell2_Y ], 2 );
 		BoardHandler.instance.ChangeCellSprite( array_cells[ cell3_X, cell3_Y ], 2 );
+		BoardHandler.instance.ChangeNumberSprite( array_cells[ cell1_X, cell1_Y ], array_numbers[ cell1_X, cell1_Y ], true );
+		BoardHandler.instance.ChangeNumberSprite( array_cells[ cell2_X, cell2_Y ], array_numbers[ cell2_X, cell2_Y ], true );
+		BoardHandler.instance.ChangeNumberSprite( array_cells[ cell3_X, cell3_Y ], array_numbers[ cell3_X, cell3_Y ], true );
+
 	}
 
 	void ChangeNumbers()
@@ -198,6 +203,14 @@ public class GameLogic : MonoBehaviour {
 		}
 	}
 
+	public bool IsEmpty( int x, int y )
+	{
+		if( array_numbers[ x, y ] == 0 )
+			return true;
+		else
+			return false;
+	}
+
 	#region Look Methods
 	void LookUp()
 	{
@@ -211,11 +224,13 @@ public class GameLogic : MonoBehaviour {
 					{
 						counter_combo++;
 						ScoredLine( number_selected_X, number_selected_Y, number_selected_X - 1, number_selected_Y, number_selected_X - 2, number_selected_Y );
+						is_finded_Score = true;
 					}
 					else if( !is_in_UpSideDown && array_numbers[ number_selected_X - 2, number_selected_Y ] == 9 )
 					{
 						counter_combo++;
 						ScoredLine( number_selected_X, number_selected_Y, number_selected_X - 1, number_selected_Y, number_selected_X - 2, number_selected_Y );
+						is_finded_Score = true;
 					}
 
 				}
@@ -234,6 +249,7 @@ public class GameLogic : MonoBehaviour {
 						{
 							counter_combo++;
 							ScoredLine( number_selected_X, number_selected_Y, number_selected_X + 1, number_selected_Y, number_selected_X - 1, number_selected_Y );
+							is_finded_Score = true;
 						}
 					}
 					else if( array_numbers[ number_selected_X + 1, number_selected_Y ] == 6 )
@@ -242,6 +258,7 @@ public class GameLogic : MonoBehaviour {
 						{
 							counter_combo++;
 							ScoredLine( number_selected_X, number_selected_Y, number_selected_X + 1, number_selected_Y, number_selected_X - 1, number_selected_Y );
+							is_finded_Score = true;
 						}
 					}
 				}
@@ -253,6 +270,7 @@ public class GameLogic : MonoBehaviour {
 						{
 							counter_combo++;
 							ScoredLine( number_selected_X, number_selected_Y, number_selected_X + 1, number_selected_Y, number_selected_X - 1, number_selected_Y );
+							is_finded_Score = true;
 						}
 					}
 				}
@@ -269,11 +287,13 @@ public class GameLogic : MonoBehaviour {
 					{
 						counter_combo++;
 						ScoredLine( number_selected_X, number_selected_Y, number_selected_X + 1, number_selected_Y, number_selected_X + 2, number_selected_Y );
+						is_finded_Score = true;
 					}
 					else if( !is_in_UpSideDown && array_numbers[ number_selected_X + 2, number_selected_Y ] == 6 )
 					{
 						counter_combo++;
 						ScoredLine( number_selected_X, number_selected_Y, number_selected_X + 1, number_selected_Y, number_selected_X + 2, number_selected_Y );
+						is_finded_Score = true;
 					}
 				}
 			}
@@ -291,11 +311,13 @@ public class GameLogic : MonoBehaviour {
 					{
 						counter_combo++;
 						ScoredLine( number_selected_X, number_selected_Y, number_selected_X, number_selected_Y + 1, number_selected_X, number_selected_Y + 2 );
+						is_finded_Score = true;
 					}
 					else if(!is_in_UpSideDown && array_numbers[ number_selected_X, number_selected_Y + 2 ] == 9 )
 					{
 						counter_combo++;
 						ScoredLine( number_selected_X, number_selected_Y, number_selected_X, number_selected_Y + 1, number_selected_X, number_selected_Y + 2 );
+						is_finded_Score = true;
 					}
 				}
 			}
@@ -312,6 +334,7 @@ public class GameLogic : MonoBehaviour {
 						{
 							counter_combo++;
 							ScoredLine( number_selected_X, number_selected_Y, number_selected_X, number_selected_Y + 1, number_selected_X, number_selected_Y - 1 );
+							is_finded_Score = true;
 						}
 					}
 					else if( array_numbers[ number_selected_X, number_selected_Y - 1 ] == 9 )
@@ -320,6 +343,7 @@ public class GameLogic : MonoBehaviour {
 						{
 							counter_combo++;
 							ScoredLine( number_selected_X, number_selected_Y, number_selected_X, number_selected_Y + 1, number_selected_X, number_selected_Y - 1 );
+							is_finded_Score = true;
 						}
 					}
 				}
@@ -331,6 +355,7 @@ public class GameLogic : MonoBehaviour {
 						{
 							counter_combo++;
 							ScoredLine( number_selected_X, number_selected_Y, number_selected_X, number_selected_Y + 1, number_selected_X, number_selected_Y - 1 );
+							is_finded_Score = true;
 						}
 					}
 				}
@@ -346,11 +371,13 @@ public class GameLogic : MonoBehaviour {
 					{
 						counter_combo++;
 						ScoredLine( number_selected_X, number_selected_Y, number_selected_X, number_selected_Y - 1, number_selected_X, number_selected_Y - 2 );
+						is_finded_Score = true;
 					}
 					else if( !is_in_UpSideDown && array_numbers[ number_selected_X, number_selected_Y - 2 ] == 6 )
 					{
 						counter_combo++;
 						ScoredLine( number_selected_X, number_selected_Y, number_selected_X, number_selected_Y - 1, number_selected_X, number_selected_Y - 2 );
+						is_finded_Score = true;
 					}
 				}
 			}

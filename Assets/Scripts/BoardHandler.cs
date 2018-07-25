@@ -11,8 +11,7 @@ public class BoardHandler : MonoBehaviour {
 
 
 	public Sprite[] sprites_cells;
-	public Sprite[] sprites_numbers_white;
-	public Sprite[] sprites_numbers_black;
+	public Sprite[] sprites_numbers;
 
 
 	#endregion
@@ -34,14 +33,16 @@ public class BoardHandler : MonoBehaviour {
 
 	public void ChangeNumberSprite(GameObject cell , int number , bool white)
 	{
+		if( number == 6 )
+			number = 0;
+		else if( number == 9 )
+			number = 2;
+
+
 		if( white )
-		{
-			cell.transform.GetChild( 0 ).GetComponent<SpriteRenderer>().sprite = sprites_numbers_white[ number ];
-		}
-		else
-		{
-			cell.transform.GetChild( 0 ).GetComponent<SpriteRenderer>().sprite = sprites_numbers_black[ number ];
-		}
+			number += 3;
+
+		cell.transform.GetChild( 0 ).GetComponent<SpriteRenderer>().sprite = sprites_numbers[ number ];
 	}
 
 	
