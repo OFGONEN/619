@@ -148,16 +148,16 @@ public class GameLogic : MonoBehaviour {
 		is_finded_Score = false;
 		
 		LookUp();
-		//LookUpRight();
+		LookUpRight();
 		LookRight();
-		//LookRightDown();
-		//LookDown();
+		LookDownRight();
+		LookDown();
 
 		if( is_in_UpSideDown )
 		{
-			//LookDownLeft();
-			//LookLeft();
-			//LookUpLeft();
+			LookDownLeft();
+			LookLeft();
+			LookUpLeft();
 		}
 
 		if(is_finded_Score)
@@ -220,6 +220,373 @@ public class GameLogic : MonoBehaviour {
 	}
 
 	#region Look Methods
+	void LookLeft()
+	{
+		if( number_toPut == 6 )
+		{
+			if( number_selected_Y - 1 >= 0 && array_numbers[ number_selected_X, number_selected_Y - 1 ] == 1 )
+			{
+				if( number_selected_Y - 2 >= 0)
+				{
+					if( array_numbers[ number_selected_X, number_selected_Y - 2 ] == 6 )
+						FindScore( number_selected_X, number_selected_Y, number_selected_X, number_selected_Y - 1, number_selected_X, number_selected_Y - 2 );
+				}
+			}
+		}
+		else if( number_toPut == 1 )
+		{
+			if( number_selected_Y - 1 >= 0 )
+			{
+					if( array_numbers[ number_selected_X, number_selected_Y - 1 ] == 6 )
+					{
+						if( number_selected_Y + 1 < size.y && array_numbers[ number_selected_X, number_selected_Y + 1 ] == 6 )
+						{
+							FindScore( number_selected_X, number_selected_Y, number_selected_X, number_selected_Y + 1, number_selected_X, number_selected_Y - 1 );
+						}
+					}
+					else if( array_numbers[ number_selected_X, number_selected_Y - 1 ] == 9 )
+					{
+						if( number_selected_Y + 1 < size.y && array_numbers[ number_selected_X, number_selected_Y + 1 ] == 9 )
+						{
+							FindScore( number_selected_X, number_selected_Y, number_selected_X, number_selected_Y + 1, number_selected_X, number_selected_Y - 1 );
+						}
+					}
+				
+			}
+		}
+		else if (number_toPut == 9 )
+		{
+			if( number_selected_Y - 1 >= 0 && array_numbers[ number_selected_X, number_selected_Y - 1 ] == 1 )
+			{
+				if( number_selected_Y - 2 >= 0 )
+				{
+					if( array_numbers[ number_selected_X, number_selected_Y - 2 ] == 9 )
+						FindScore( number_selected_X, number_selected_Y, number_selected_X, number_selected_Y - 1, number_selected_X, number_selected_Y - 2 );
+				}
+			}
+		}
+	}
+	void LookRight()
+	{
+		if( number_toPut == 6 )
+		{
+			if( number_selected_Y + 1 < size.y && array_numbers[ number_selected_X, number_selected_Y + 1 ] == 1 )
+			{
+				if( number_selected_Y + 2 < size.y )
+				{
+					if( is_in_UpSideDown && array_numbers[ number_selected_X, number_selected_Y + 2 ] == 6 )
+					{
+						FindScore( number_selected_X, number_selected_Y, number_selected_X, number_selected_Y + 1, number_selected_X, number_selected_Y + 2 );
+					}
+					else if( !is_in_UpSideDown && array_numbers[ number_selected_X, number_selected_Y + 2 ] == 9 )
+					{
+						FindScore( number_selected_X, number_selected_Y, number_selected_X, number_selected_Y + 1, number_selected_X, number_selected_Y + 2 );
+					}
+				}
+			}
+		}
+		else if( number_toPut == 1 )
+		{
+			if( number_selected_Y - 1 >= 0 )
+			{
+				if( is_in_UpSideDown )
+				{
+					if( array_numbers[ number_selected_X, number_selected_Y - 1 ] == 6 )
+					{
+						if( number_selected_Y + 1 < size.y && array_numbers[ number_selected_X, number_selected_Y + 1 ] == 6 )
+						{
+							FindScore( number_selected_X, number_selected_Y, number_selected_X, number_selected_Y + 1, number_selected_X, number_selected_Y - 1 );
+						}
+					}
+					else if( array_numbers[ number_selected_X, number_selected_Y - 1 ] == 9 )
+					{
+						if( number_selected_Y + 1 < size.y && array_numbers[ number_selected_X, number_selected_Y + 1 ] == 9 )
+						{
+							FindScore( number_selected_X, number_selected_Y, number_selected_X, number_selected_Y + 1, number_selected_X, number_selected_Y - 1 );
+						}
+					}
+				}
+				else
+				{
+					if( array_numbers[ number_selected_X, number_selected_Y - 1 ] == 6 )
+					{
+						if( number_selected_Y + 1 < size.y && array_numbers[ number_selected_X, number_selected_Y + 1 ] == 9 )
+						{
+							FindScore( number_selected_X, number_selected_Y, number_selected_X, number_selected_Y + 1, number_selected_X, number_selected_Y - 1 );
+						}
+					}
+				}
+			}
+		}
+		else if( number_toPut == 9 )
+		{
+			if( number_selected_Y - 1 >= 0 && array_numbers[ number_selected_X, number_selected_Y - 1 ] == 1 )
+			{
+				if( number_selected_Y - 2 >= 0 )
+				{
+					if( is_in_UpSideDown && array_numbers[ number_selected_X, number_selected_Y - 2 ] == 9 )
+					{
+						FindScore( number_selected_X, number_selected_Y, number_selected_X, number_selected_Y - 1, number_selected_X, number_selected_Y - 2 );
+					}
+					else if( !is_in_UpSideDown && array_numbers[ number_selected_X, number_selected_Y - 2 ] == 6 )
+					{
+						FindScore( number_selected_X, number_selected_Y, number_selected_X, number_selected_Y - 1, number_selected_X, number_selected_Y - 2 );
+					}
+				}
+			}
+		}
+	}
+	void LookDown()
+	{
+		if(number_toPut == 6 )
+		{
+			if(number_selected_X + 1 < size.x && array_numbers[number_selected_X + 1 , number_selected_Y ] == 1 )
+			{
+				if( number_selected_X + 2 > size.x )
+				{
+					if( is_in_UpSideDown && array_numbers[ number_selected_X + 2, number_selected_Y ] == 6 )
+						FindScore( number_selected_X, number_selected_Y, number_selected_X + 1, number_selected_Y + 1, number_selected_X + 2, number_selected_Y + 2 );
+					else if(!is_in_UpSideDown && array_numbers[ number_selected_X + 2, number_selected_Y ] == 9 )
+						FindScore( number_selected_X, number_selected_Y, number_selected_X + 1, number_selected_Y + 1, number_selected_X + 2, number_selected_Y + 2 );
+
+				}
+			}
+		}
+		else if(number_toPut == 1 )
+		{
+			if( number_selected_X - 1 >= 0 )
+			{
+				if( is_in_UpSideDown )
+				{
+					if(array_numbers[number_selected_X - 1 , number_selected_Y] == 6 )
+					{
+						if( number_selected_X + 1 < size.x && array_numbers[ number_selected_X + 1, number_selected_Y ] == 6 )
+							FindScore( number_selected_X, number_selected_Y, number_selected_X - 1, number_selected_Y, number_selected_X + 1, number_selected_Y );
+					}
+					else if( array_numbers[ number_selected_X - 1, number_selected_Y ] == 9 )
+					{
+						if( number_selected_X + 1 < size.x && array_numbers[ number_selected_X + 1, number_selected_Y ] == 9 )
+							FindScore( number_selected_X, number_selected_Y, number_selected_X - 1, number_selected_Y, number_selected_X + 1, number_selected_Y );
+					}
+				}
+				else
+				{
+					if( array_numbers[ number_selected_X - 1, number_selected_Y ] == 6 )
+					{
+						if( number_selected_X + 1 < size.x && array_numbers[ number_selected_X + 1, number_selected_Y ] == 9 )
+							FindScore( number_selected_X, number_selected_Y, number_selected_X - 1, number_selected_Y, number_selected_X + 1, number_selected_Y );
+					}
+				}
+			}
+		}
+		else if( number_toPut == 9 )
+		{
+			if( number_selected_X - 1 >= 0 && array_numbers[ number_selected_X - 1, number_selected_Y ] == 1 )
+			{
+				if( number_selected_X - 2 >= 0  )
+				{
+					if( is_in_UpSideDown && array_numbers[ number_selected_X - 2, number_selected_Y ] == 9 )
+						FindScore( number_selected_X, number_selected_Y, number_selected_X - 1, number_selected_Y - 1, number_selected_X - 2, number_selected_Y - 2 );
+					else if( !is_in_UpSideDown && array_numbers[ number_selected_X - 2, number_selected_Y ] == 6 )
+						FindScore( number_selected_X, number_selected_Y, number_selected_X - 1, number_selected_Y - 1, number_selected_X - 2, number_selected_Y - 2 );
+				}
+			}
+		}
+	}
+	void LookUpLeft()
+	{
+		if( number_toPut == 6 )
+		{
+			if( number_selected_X - 1 >= 0 && number_selected_Y - 1 >= 0  && array_numbers[ number_selected_X - 1, number_selected_Y - 1 ] == 1 )
+			{
+				if( number_selected_X - 2 >= 0 && number_selected_Y - 2 >= 0 )
+				{
+					if( array_numbers[ number_selected_X - 2, number_selected_Y - 2 ] == 6 )
+						FindScore( number_selected_X, number_selected_Y, number_selected_X - 1, number_selected_Y - 1, number_selected_X - 2, number_selected_Y - 2 );
+				}
+			}
+		}
+		else if(number_toPut == 1)
+		{
+			if(number_selected_X + 1 < size.x && number_selected_Y + 1 < size.y )
+			{
+				if(array_numbers[ number_selected_X + 1  , number_selected_Y + 1 ] == 6 )
+				{
+					if( number_selected_X - 1 >= 0 && number_selected_Y - 1 >= 0 && array_numbers[ number_selected_X - 1, number_selected_Y - 1 ] == 6 )
+						FindScore( number_selected_X, number_selected_Y, number_selected_X + 1, number_selected_Y + 1, number_selected_X - 1, number_selected_Y - 1 );
+				}
+				else if( array_numbers[ number_selected_X + 1, number_selected_Y + 1 ] == 9 )
+				{
+					if( number_selected_X - 1 >= 0 && number_selected_Y - 1 >= 0 && array_numbers[ number_selected_X - 1, number_selected_Y - 1 ] == 9 )
+						FindScore( number_selected_X, number_selected_Y, number_selected_X + 1, number_selected_Y + 1, number_selected_X - 1, number_selected_Y - 1 );
+				}
+			}
+		}
+		else if(number_toPut == 9)
+		{
+			if( number_selected_X + 1 < size.x && number_selected_Y + 1 < size.y && array_numbers[ number_selected_X + 1, number_selected_Y + 1 ] == 1 )
+			{
+				if( number_selected_X + 2 < size.x && number_selected_Y + 2 < size.x )
+				{
+					if( array_numbers[ number_selected_X + 2, number_selected_Y + 2 ] == 9 )
+						FindScore( number_selected_X, number_selected_Y, number_selected_X + 1, number_selected_Y + 1, number_selected_X + 2, number_selected_Y + 2 );
+				}
+			}
+		}
+	}
+	void LookDownLeft()
+	{
+		if( number_toPut == 6 )
+		{
+			if( number_selected_X + 1 < size.x && number_selected_Y - 1 >= 0 && array_numbers[ number_selected_X + 1, number_selected_Y - 1 ] == 1 )
+			{
+				if( number_selected_X + 2 < size.x && number_selected_Y - 2 >= 0 )
+				{
+					if( array_numbers[ number_selected_X + 2, number_selected_Y - 2 ] == 6 )
+						FindScore( number_selected_X, number_selected_Y, number_selected_X + 1, number_selected_Y - 1, number_selected_X + 2, number_selected_Y - 2 );
+				}
+			}
+		}
+		else if( number_toPut == 1 )
+		{
+			if( number_selected_X - 1 >= 0 && number_selected_Y + 1 < size.y )
+			{
+				if( array_numbers[ number_selected_X - 1, number_selected_Y + 1 ] == 6 )
+				{
+					if( number_selected_X + 1 < size.x && number_selected_Y - 1 >= 0 && array_numbers[ number_selected_X + 1, number_selected_Y - 1 ] == 6 )
+						FindScore( number_selected_X, number_selected_Y, number_selected_X + 1, number_selected_Y - 1, number_selected_X - 1, number_selected_Y + 1 );
+				}
+				else if( array_numbers[ number_selected_X - 1, number_selected_Y + 1 ] == 9 )
+				{
+					if( number_selected_X + 1 < size.x && number_selected_Y - 1 >= 0 && array_numbers[ number_selected_X + 1, number_selected_Y - 1 ] == 9 )
+						FindScore( number_selected_X, number_selected_Y, number_selected_X + 1, number_selected_Y - 1, number_selected_X - 1, number_selected_Y + 1 );
+				}
+			}
+		}
+		else if( number_toPut == 9 )
+		{
+			if( number_selected_X - 1 >= 0 && number_selected_Y + 1 < size.y && array_numbers[ number_selected_X - 1, number_selected_Y + 1 ] == 1 )
+			{
+				if( number_selected_X - 2 >= 0 && number_selected_Y + 2 < size.x )
+				{
+					if( array_numbers[ number_selected_X - 2, number_selected_Y + 2 ] == 9 )
+						FindScore( number_selected_X, number_selected_Y, number_selected_X - 1, number_selected_Y + 1, number_selected_X - 2, number_selected_Y + 2 );
+				}
+			}
+		}
+	}
+	void LookUpRight()
+	{
+		if(number_toPut == 6 )
+		{
+			if( number_selected_X - 1 >= 0 && number_selected_Y + 1 < size.y &&  array_numbers[number_selected_X - 1 , number_selected_Y + 1] == 1 )
+			{
+				if( number_selected_X - 2 >= 0 && number_selected_Y + 2 < size.y )
+				{
+					if( is_in_UpSideDown && array_numbers[ number_selected_X - 2, number_selected_Y + 2 ] == 6 )
+						FindScore( number_selected_X, number_selected_Y, number_selected_X - 1, number_selected_Y + 1, number_selected_X - 2, number_selected_Y + 2 );
+					else if(!is_in_UpSideDown && array_numbers[ number_selected_X - 2, number_selected_Y + 2 ] == 9 )
+						FindScore( number_selected_X, number_selected_Y, number_selected_X - 1, number_selected_Y + 1, number_selected_X - 2, number_selected_Y + 2 );
+				}
+			}
+		}
+		else if(number_toPut == 1)
+		{
+			if( number_selected_X + 1 < size.x && number_selected_Y - 1 >= 0)
+			{
+				if( is_in_UpSideDown )
+				{
+					if(array_numbers[number_selected_X +  1 , number_selected_Y - 1 ] == 6 )
+					{
+						if( number_selected_X - 1 >= 0 && number_selected_Y + 1 < size.y && array_numbers[ number_selected_X - 1, number_selected_Y + 1 ] == 6 )
+							FindScore( number_selected_X, number_selected_Y, number_selected_X + 1, number_selected_Y - 1, number_selected_X - 1, number_selected_Y + 1 );
+					}
+					else if( array_numbers[ number_selected_X + 1, number_selected_Y - 1 ] == 9 )
+					{
+						if( number_selected_X - 1 >= 0 && number_selected_Y + 1 < size.y && array_numbers[ number_selected_X - 1, number_selected_Y + 1 ] == 9 )
+							FindScore( number_selected_X, number_selected_Y, number_selected_X + 1, number_selected_Y - 1, number_selected_X - 1, number_selected_Y + 1 );
+					}
+				}
+				else
+				{
+					if( array_numbers[ number_selected_X + 1, number_selected_Y - 1 ] == 6 )
+					{
+						if( number_selected_X - 1 >= 0 && number_selected_Y + 1 < size.y && array_numbers[ number_selected_X - 1, number_selected_Y + 1 ] == 9)
+							FindScore( number_selected_X, number_selected_Y, number_selected_X + 1, number_selected_Y - 1, number_selected_X - 1, number_selected_Y + 1 );
+					}
+				}
+			}
+		}
+		else if(number_toPut == 9 )
+		{
+			if( number_selected_X + 1 < size.x && number_selected_Y - 1 >= 0 && array_numbers[ number_selected_X + 1, number_selected_Y - 1 ] == 1 )
+			{
+				if( number_selected_X + 2 < size.x && number_selected_Y - 2 >= 0 )
+				{
+					if( is_in_UpSideDown && array_numbers[ number_selected_X + 2, number_selected_Y - 2 ] == 9 )
+						FindScore( number_selected_X, number_selected_Y, number_selected_X - 1, number_selected_Y + 1, number_selected_X - 2, number_selected_Y + 2 );
+					else if( !is_in_UpSideDown && array_numbers[ number_selected_X + 2, number_selected_Y - 2 ] == 6 )
+						FindScore( number_selected_X, number_selected_Y, number_selected_X + 1, number_selected_Y - 1, number_selected_X + 2, number_selected_Y - 2 );
+				}
+			}
+		}
+	}
+	void LookDownRight()
+	{
+		if( number_toPut == 6 )
+		{
+			if( number_selected_X + 1 < size.x && number_selected_Y + 1 < size.y && array_numbers[ number_selected_X + 1, number_selected_Y + 1 ] == 1 )
+			{
+				if( number_selected_X + 2 < size.x && number_selected_Y + 2 < size.y )
+				{
+					if( is_in_UpSideDown && array_numbers[ number_selected_X + 2, number_selected_Y + 2 ] == 6 )
+						FindScore( number_selected_X, number_selected_Y, number_selected_X + 1, number_selected_Y + 1, number_selected_X + 2, number_selected_Y + 2 );
+					else if( !is_in_UpSideDown && array_numbers[ number_selected_X - 2, number_selected_Y + 2 ] == 9 )
+						FindScore( number_selected_X, number_selected_Y, number_selected_X + 1, number_selected_Y + 1, number_selected_X + 2, number_selected_Y + 2 );
+				}
+			}
+		}
+		else if( number_toPut == 1 )
+		{
+			if( number_selected_X - 1 >= 0 && number_selected_Y - 1 >= 0 )
+			{
+				if( is_in_UpSideDown )
+				{
+					if( array_numbers[ number_selected_X - 1, number_selected_Y - 1 ] == 6 )
+					{
+						if( number_selected_X + 1 < size.x && number_selected_Y + 1 < size.y && array_numbers[ number_selected_X + 1, number_selected_Y + 1 ] == 6 )
+							FindScore( number_selected_X, number_selected_Y, number_selected_X - 1, number_selected_Y - 1, number_selected_X + 1, number_selected_Y + 1 );
+					}
+					else if( array_numbers[ number_selected_X - 1, number_selected_Y - 1 ] == 9 )
+					{
+						if( number_selected_X + 1 < size.x && number_selected_Y + 1 < size.y && array_numbers[ number_selected_X + 1, number_selected_Y + 1 ] == 9 )
+							FindScore( number_selected_X, number_selected_Y, number_selected_X - 1, number_selected_Y - 1, number_selected_X + 1, number_selected_Y + 1 );
+					}
+				}
+				else
+				{
+					if( array_numbers[ number_selected_X - 1, number_selected_Y - 1 ] == 6 )
+					{
+						if( number_selected_X + 1 < size.x && number_selected_Y + 1 < size.y && array_numbers[ number_selected_X + 1, number_selected_Y + 1 ] == 9 )
+							FindScore( number_selected_X, number_selected_Y, number_selected_X - 1, number_selected_Y - 1, number_selected_X + 1, number_selected_Y + 1 );
+					}
+				}
+			}
+		}
+		else if( number_toPut == 9 )
+		{
+			if( number_selected_X - 1 >= 0 && number_selected_Y - 1 >= 0 && array_numbers[ number_selected_X - 1, number_selected_Y - 1 ] == 1 )
+			{
+				if( number_selected_X - 2 >= 0 && number_selected_Y - 2 >= 0 )
+				{
+					if( is_in_UpSideDown && array_numbers[ number_selected_X - 2, number_selected_Y - 2 ] == 9 )
+						FindScore( number_selected_X, number_selected_Y, number_selected_X - 1, number_selected_Y - 1, number_selected_X - 2, number_selected_Y - 2 );
+					else if( !is_in_UpSideDown && array_numbers[ number_selected_X - 2, number_selected_Y - 2 ] == 6 )
+						FindScore( number_selected_X, number_selected_Y, number_selected_X - 1, number_selected_Y - 1, number_selected_X - 2, number_selected_Y - 2 );
+				}
+			}
+		}
+	}
 	void LookUp()
 	{
 		if( number_toPut == 6 )
@@ -229,17 +596,9 @@ public class GameLogic : MonoBehaviour {
 				if( number_selected_X - 2 >= 0 )
 				{
 					if( is_in_UpSideDown && array_numbers[ number_selected_X - 2, number_selected_Y ] == 6 )
-					{
-						counter_combo++;
-						ScoredLine( number_selected_X, number_selected_Y, number_selected_X - 1, number_selected_Y, number_selected_X - 2, number_selected_Y );
-						is_finded_Score = true;
-					}
+						FindScore( number_selected_X, number_selected_Y, number_selected_X - 1, number_selected_Y, number_selected_X - 2, number_selected_Y );
 					else if( !is_in_UpSideDown && array_numbers[ number_selected_X - 2, number_selected_Y ] == 9 )
-					{
-						counter_combo++;
-						ScoredLine( number_selected_X, number_selected_Y, number_selected_X - 1, number_selected_Y, number_selected_X - 2, number_selected_Y );
-						is_finded_Score = true;
-					}
+						FindScore( number_selected_X, number_selected_Y, number_selected_X - 1, number_selected_Y, number_selected_X - 2, number_selected_Y );
 
 				}
 			}
@@ -254,20 +613,12 @@ public class GameLogic : MonoBehaviour {
 					if( array_numbers[ number_selected_X + 1, number_selected_Y ] == 9 )
 					{
 						if( number_selected_X - 1 >= 0 && array_numbers[ number_selected_X - 1, number_selected_Y ] == 9 )
-						{
-							counter_combo++;
-							ScoredLine( number_selected_X, number_selected_Y, number_selected_X + 1, number_selected_Y, number_selected_X - 1, number_selected_Y );
-							is_finded_Score = true;
-						}
+							FindScore( number_selected_X, number_selected_Y, number_selected_X + 1, number_selected_Y, number_selected_X - 1, number_selected_Y );
 					}
 					else if( array_numbers[ number_selected_X + 1, number_selected_Y ] == 6 )
 					{
 						if( number_selected_X - 1 >= 0 && array_numbers[ number_selected_X - 1, number_selected_Y ] == 6 )
-						{
-							counter_combo++;
-							ScoredLine( number_selected_X, number_selected_Y, number_selected_X + 1, number_selected_Y, number_selected_X - 1, number_selected_Y );
-							is_finded_Score = true;
-						}
+							FindScore( number_selected_X, number_selected_Y, number_selected_X + 1, number_selected_Y, number_selected_X - 1, number_selected_Y );
 					}
 				}
 				else
@@ -275,11 +626,7 @@ public class GameLogic : MonoBehaviour {
 					if( array_numbers[ number_selected_X + 1, number_selected_Y ] == 6 )
 					{
 						if( number_selected_X - 1 >= 0 && array_numbers[ number_selected_X - 1, number_selected_Y ] == 9 )
-						{
-							counter_combo++;
-							ScoredLine( number_selected_X, number_selected_Y, number_selected_X + 1, number_selected_Y, number_selected_X - 1, number_selected_Y );
-							is_finded_Score = true;
-						}
+							FindScore( number_selected_X, number_selected_Y, number_selected_X + 1, number_selected_Y, number_selected_X - 1, number_selected_Y );
 					}
 				}
 
@@ -293,103 +640,22 @@ public class GameLogic : MonoBehaviour {
 				{
 					if( is_in_UpSideDown && array_numbers[ number_selected_X + 2, number_selected_Y ] == 9 )
 					{
-						counter_combo++;
-						ScoredLine( number_selected_X, number_selected_Y, number_selected_X + 1, number_selected_Y, number_selected_X + 2, number_selected_Y );
-						is_finded_Score = true;
+						FindScore( number_selected_X, number_selected_Y, number_selected_X + 1, number_selected_Y, number_selected_X + 2, number_selected_Y );
 					}
 					else if( !is_in_UpSideDown && array_numbers[ number_selected_X + 2, number_selected_Y ] == 6 )
 					{
-						counter_combo++;
-						ScoredLine( number_selected_X, number_selected_Y, number_selected_X + 1, number_selected_Y, number_selected_X + 2, number_selected_Y );
-						is_finded_Score = true;
+						FindScore( number_selected_X, number_selected_Y, number_selected_X + 1, number_selected_Y, number_selected_X + 2, number_selected_Y );
 					}
 				}
 			}
 		}
 	}
-	void LookRight()
+	
+	void FindScore(int x_cell1 , int y_cell1 , int x_cell2 , int y_cell2 , int x_cell3 , int y_cell3)
 	{
-		if(number_toPut == 6 )
-		{
-			if(number_selected_Y + 1 < size.y && array_numbers[number_selected_X,number_selected_Y + 1 ] == 1 )
-			{
-				if(number_selected_Y + 2 < size.y )
-				{
-					if(is_in_UpSideDown && array_numbers[number_selected_X,number_selected_Y + 2 ] == 6 )
-					{
-						counter_combo++;
-						ScoredLine( number_selected_X, number_selected_Y, number_selected_X, number_selected_Y + 1, number_selected_X, number_selected_Y + 2 );
-						is_finded_Score = true;
-					}
-					else if(!is_in_UpSideDown && array_numbers[ number_selected_X, number_selected_Y + 2 ] == 9 )
-					{
-						counter_combo++;
-						ScoredLine( number_selected_X, number_selected_Y, number_selected_X, number_selected_Y + 1, number_selected_X, number_selected_Y + 2 );
-						is_finded_Score = true;
-					}
-				}
-			}
-		}
-		else if(number_toPut == 1)
-		{
-			if(number_selected_Y - 1 >= 0 )
-			{
-				if( is_in_UpSideDown )
-				{
-					if( array_numbers[ number_selected_X, number_selected_Y - 1 ] == 6 )
-					{
-						if( number_selected_Y + 1 < size.y && array_numbers[ number_selected_X, number_selected_Y + 1 ] == 6 )
-						{
-							counter_combo++;
-							ScoredLine( number_selected_X, number_selected_Y, number_selected_X, number_selected_Y + 1, number_selected_X, number_selected_Y - 1 );
-							is_finded_Score = true;
-						}
-					}
-					else if( array_numbers[ number_selected_X, number_selected_Y - 1 ] == 9 )
-					{
-						if(number_selected_Y + 1 < size.y && array_numbers[number_selected_X,number_selected_Y + 1] == 9 )
-						{
-							counter_combo++;
-							ScoredLine( number_selected_X, number_selected_Y, number_selected_X, number_selected_Y + 1, number_selected_X, number_selected_Y - 1 );
-							is_finded_Score = true;
-						}
-					}
-				}
-				else
-				{
-					if( array_numbers[ number_selected_X, number_selected_Y - 1 ] == 6 )
-					{
-						if( number_selected_Y + 1 < size.y && array_numbers[ number_selected_X, number_selected_Y + 1 ] == 9 )
-						{
-							counter_combo++;
-							ScoredLine( number_selected_X, number_selected_Y, number_selected_X, number_selected_Y + 1, number_selected_X, number_selected_Y - 1 );
-							is_finded_Score = true;
-						}
-					}
-				}
-			}
-		}
-		else if( number_toPut == 9 )
-		{
-			if( number_selected_Y - 1 >= 0 && array_numbers[ number_selected_X, number_selected_Y - 1 ] == 1 )
-			{
-				if( number_selected_Y - 2 >= 0 )
-				{
-					if( is_in_UpSideDown && array_numbers[ number_selected_X, number_selected_Y - 2 ] == 9 )
-					{
-						counter_combo++;
-						ScoredLine( number_selected_X, number_selected_Y, number_selected_X, number_selected_Y - 1, number_selected_X, number_selected_Y - 2 );
-						is_finded_Score = true;
-					}
-					else if( !is_in_UpSideDown && array_numbers[ number_selected_X, number_selected_Y - 2 ] == 6 )
-					{
-						counter_combo++;
-						ScoredLine( number_selected_X, number_selected_Y, number_selected_X, number_selected_Y - 1, number_selected_X, number_selected_Y - 2 );
-						is_finded_Score = true;
-					}
-				}
-			}
-		}
+		counter_combo++;
+		ScoredLine( x_cell1, y_cell1, x_cell2, y_cell2, x_cell3, y_cell3 );
+		is_finded_Score = true;
 	}
 	#endregion
 	#region Get Methods

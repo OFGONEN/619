@@ -54,9 +54,9 @@ public class Counter : MonoBehaviour {
 	public void Scored( bool inUpsideDown )
 	{
 		if( inUpsideDown )
-			counter = time_upsideDown_toAdd;
+			counter += time_upsideDown_toAdd;
 		else
-			counter = time_normal_toAdd;
+			counter += time_normal_toAdd;
 	}
 
 	public void TooglePause( int pause )
