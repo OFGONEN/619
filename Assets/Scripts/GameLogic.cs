@@ -127,6 +127,7 @@ public class GameLogic : MonoBehaviour {
 		FindScore();
 		if( is_finded_Score )
 		{
+			Debug.Log( "Scored " + number_toPut );
 			Mouse.instance.canHit = true;
 			if(counter_combo >= 2 )
 			{

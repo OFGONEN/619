@@ -62,9 +62,6 @@ public class Mouse : MonoBehaviour {
 				{
 					if( obj_hit.tag == "option" )
 					{
-						obj_selected.transform.localScale = new Vector2( cell_normal_scale, cell_normal_scale );
-						BoardHandler.instance.ChangeCellSprite( obj_selected, 0 );
-						options.SetActive( false );
 
 						int number_put = ( int )obj_hit.name[ 0 ] - 48;
 
@@ -73,13 +70,15 @@ public class Mouse : MonoBehaviour {
 							if(number_put == 1 && CanPut(number_put) )
 							{
 								BoardHandler.instance.ChangeNumberSprite( obj_selected, number_put, false );
+								ResetMouse();
 								GameLogic.instance.UpdateArrayNumber( number_put, x, y );
 							}
 							else
 							{
-								if(CanPut(15 - number_put ) )
+								if(CanPut(number_put ) )
 								{
 									BoardHandler.instance.ChangeNumberSprite( obj_selected, 15 - number_put, false );
+									ResetMouse();
 									GameLogic.instance.UpdateArrayNumber( number_put, x, y );
 								}
 							}
@@ -90,17 +89,14 @@ public class Mouse : MonoBehaviour {
 							if( CanPut( number_put ) )
 							{
 								BoardHandler.instance.ChangeNumberSprite( obj_selected, number_put, false );
+								ResetMouse();
 								GameLogic.instance.UpdateArrayNumber( number_put, x, y );
 							}
 
 						}
 
+						
 
-						canHit = false;
-						obj_hit = null;
-						obj_selected = null;
-						x = -1;
-						y = -1;
 					}
 					else
 					{
@@ -146,21 +142,7 @@ public class Mouse : MonoBehaviour {
 							obj_selected = obj_hit;
 							obj_selected.transform.localScale = new Vector2( cell_big_scale, cell_big_scale);
 							BoardHandler.instance.ChangeCellSprite( obj_selected, 1 );
-							// burayi yerine gore degistirmem gerek
-							if(GameLogic.instance.GetCurrentPlayer() == 1 )
-							{
-								OptionButtonTextChanger.instance.ChangeNumber( 6, player1_counter_number_6 );
-								OptionButtonTextChanger.instance.ChangeNumber( 9, player1_counter_number_9 );
-								OptionButtonTextChanger.instance.ChangeNumber( 1, player1_counter_number_1 );
-							}
-							else
-							{
-								OptionButtonTextChanger.instance.ChangeNumber( 6, player2_counter_number_6 );
-								OptionButtonTextChanger.instance.ChangeNumber( 9, player2_counter_number_9 );
-								OptionButtonTextChanger.instance.ChangeNumber( 1, player2_counter_number_1 );
-							}
-							
-							options.SetActive( true );
+							OpenOptions();
 						}
 
 					}
@@ -170,6 +152,16 @@ public class Mouse : MonoBehaviour {
 	}
 	
 	#region Methods
+	void ResetMouse()
+	{
+		obj_selected.transform.localScale = new Vector2( cell_normal_scale, cell_normal_scale );
+		BoardHandler.instance.ChangeCellSprite( obj_selected, 0 );
+		options.SetActive( false );
+		canHit = false;
+		obj_hit = null;
+		obj_selected = null;
+	}
+
 	public void Neutralize()
 	{
 		if( obj_selected != null )
@@ -253,18 +245,22 @@ public class Mouse : MonoBehaviour {
 			
 	}
 
-	void ToogleOptions(bool open)
+	void OpenOptions() // optinlarin guzel bir yerde cikmasi icin bu 
 	{
-		if( open )
-		{
 
+		if( GameLogic.instance.GetCurrentPlayer() == 1 )
+		{
+			OptionButtonTextChanger.instance.ChangeNumber( 6, player1_counter_number_6 );
+			OptionButtonTextChanger.instance.ChangeNumber( 9, player1_counter_number_9 );
+			OptionButtonTextChanger.instance.ChangeNumber( 1, player1_counter_number_1 );
 		}
 		else
 		{
-
+			OptionButtonTextChanger.instance.ChangeNumber( 6, player2_counter_number_6 );
+			OptionButtonTextChanger.instance.ChangeNumber( 9, player2_counter_number_9 );
+			OptionButtonTextChanger.instance.ChangeNumber( 1, player2_counter_number_1 );
 		}
-
-		options.SetActive( false );
+		options.SetActive(true);
 	}
 	#endregion
 
