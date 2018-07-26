@@ -61,7 +61,7 @@ public class OptionsHandler : MonoBehaviour {
 		if(keyboard != null && keyboard.active )
 		{
 			bufferText.text = keyboard.text.ToUpper();
-			PlayerPrefs.SetString( bufferPrefName, keyboard.text );
+			PlayerPrefs.SetString( bufferPrefName, keyboard.text.ToUpper() );
 		}
 	}
 

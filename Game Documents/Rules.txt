@@ -1,0 +1,26 @@
+Did you ever played S.O.S or XOX ? 
+
+It's almost same but more frustrating :)
+
+Your goal is to make 619 to score.If you do 619 two times at the same round, 
+you get to UpsideDown and in UpsideDown only way to score is make 616 or 919.
+
+Be careful! Making 916 is not how you score, 6 always have to be left side of the 9. 
+
+Remember this is a table game and your opponent is not phone, your best friend is.
+
+Game Rules:
+
+Normal Board:
+
+-Every round is 20 second.
+-Every score gets you 5 point.
+-Every score gets you 4 second to play more.
+-If you make 2 score at one round, you can go UpsideDown.
+-Combos will be your best friend.
+
+UpsideDown Board:
+
+-You can stay in UpsideDown for 10 second.
+-Every score gets you 4 point.
+-Every score get you 2 second to play more.

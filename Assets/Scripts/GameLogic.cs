@@ -8,6 +8,9 @@ public class GameLogic : MonoBehaviour {
 	#region Variables
 	public static GameLogic instance = null;
 
+	public int score_normal;
+	public int score_upsidedown;
+
 	private Vector2 size;
 	private GameObject[,] array_cells;
 	private int[,] array_numbers;
@@ -54,6 +57,7 @@ public class GameLogic : MonoBehaviour {
 	{
 		if(can_EndTurn )
 		{
+			Mouse.instance.Neutralize();
 			if( is_in_UpSideDown )
 			{
 				BoardHandler.instance.EndUpsideDown( currentPlayer );
@@ -71,6 +75,7 @@ public class GameLogic : MonoBehaviour {
 			is_in_UpSideDown = false;
 			can_EndTurn = false;
 			counter_combo = 0;
+			Mouse.instance.canHit = true;
 		}
 	}
 
@@ -84,6 +89,7 @@ public class GameLogic : MonoBehaviour {
 			can_GoUpSideDown = false;
 			can_EndTurn = false;
 			is_in_UpSideDown = true;
+			Mouse.instance.canHit = true;
 		}
 	}
 
@@ -121,6 +127,7 @@ public class GameLogic : MonoBehaviour {
 		FindScore();
 		if( is_finded_Score )
 		{
+			Mouse.instance.canHit = true;
 			if(counter_combo >= 2 )
 			{
 				can_GoUpSideDown = true;
@@ -159,9 +166,9 @@ public class GameLogic : MonoBehaviour {
 	void DeclareScore()
 	{
 		if( is_in_UpSideDown )
-			score_toPut = 3 * counter_combo + counter_combo - 1;
+			score_toPut = score_upsidedown * counter_combo + counter_combo - 1;
 		else
-			score_toPut = 5 * counter_combo + counter_combo - 1;
+			score_toPut = score_normal * counter_combo + counter_combo - 1;
 
 		if(currentPlayer == 1 )
 		{
@@ -406,6 +413,16 @@ public class GameLogic : MonoBehaviour {
 	public int GetCurrentPlayer()
 	{
 		return currentPlayer;
+	}
+
+	public string GetWinner()
+	{
+		if( score_player1 == score_player2 )
+			return "NONE";
+		else if( score_player1 > score_player2 )
+			return PlayerPrefs.GetString( PlayerPrefs.GetString( "Player1 Name" ) );
+		else
+			return PlayerPrefs.GetString( PlayerPrefs.GetString( "Player2 Name" ) );
 	}
 	#endregion
 

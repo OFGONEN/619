@@ -9,11 +9,18 @@ public class Mouse : MonoBehaviour {
 	public static Mouse instance = null;
 	public GameObject options;
 
+	public bool canHit;
+
 	private RaycastHit2D hitInfo;
 	private GameObject obj_selected;
 	private GameObject obj_hit;
+	private float cell_normal_scale;
+	private float cell_big_scale;
 
 	int x , y;
+	int size_x , size_y;
+
+	int player1_counter_number_1 , player1_counter_number_6 , player1_counter_number_9 , player2_counter_number_1 , player2_counter_number_6 , player2_counter_number_9;
 
 	#endregion
 
@@ -25,11 +32,27 @@ public class Mouse : MonoBehaviour {
 			Destroy( gameObject );
 	}
 
-	
-	
+	private void Start()
+	{
+		cell_normal_scale =  BoardMaker.instance.GetCellScale();
+		cell_big_scale = cell_normal_scale * 1.2f;
+		x = (int)BoardMaker.instance.GetTableSize().x;
+		y = ( int )BoardMaker.instance.GetTableSize().y;
+
+		int counter = ( x * y )/6;
+		player1_counter_number_6 = counter;
+		player1_counter_number_1 = counter;
+		player1_counter_number_9 = counter;
+		player2_counter_number_6 = counter;
+		player2_counter_number_1 = counter;
+		player2_counter_number_9 = counter;
+		canHit = true;
+		
+	}
+
 	void Update () 
 	{
-		if( Input.GetMouseButtonDown( 0 ) )
+		if( Input.GetMouseButtonDown( 0 ) && canHit )
 		{
 			hitInfo = Physics2D.Raycast( Camera.main.ScreenToWorldPoint( Input.mousePosition ), Vector2.zero );
 			if( hitInfo )
@@ -39,7 +62,7 @@ public class Mouse : MonoBehaviour {
 				{
 					if( obj_hit.tag == "option" )
 					{
-						obj_selected.transform.localScale = Vector2.one;
+						obj_selected.transform.localScale = new Vector2( cell_normal_scale, cell_normal_scale );
 						BoardHandler.instance.ChangeCellSprite( obj_selected, 0 );
 						options.SetActive( false );
 
@@ -47,16 +70,33 @@ public class Mouse : MonoBehaviour {
 
 						if( GameLogic.instance.InUpsideDown() )
 						{
-							if(number_put == 1)
+							if(number_put == 1 && CanPut(number_put) )
+							{
 								BoardHandler.instance.ChangeNumberSprite( obj_selected, number_put, false );
+								GameLogic.instance.UpdateArrayNumber( number_put, x, y );
+							}
 							else
-								BoardHandler.instance.ChangeNumberSprite( obj_selected, 15 - number_put, false );
+							{
+								if(CanPut(15 - number_put ) )
+								{
+									BoardHandler.instance.ChangeNumberSprite( obj_selected, 15 - number_put, false );
+									GameLogic.instance.UpdateArrayNumber( number_put, x, y );
+								}
+							}
+
 						}
 						else
-							BoardHandler.instance.ChangeNumberSprite( obj_selected, number_put, false );
+						{
+							if( CanPut( number_put ) )
+							{
+								BoardHandler.instance.ChangeNumberSprite( obj_selected, number_put, false );
+								GameLogic.instance.UpdateArrayNumber( number_put, x, y );
+							}
 
-						GameLogic.instance.UpdateArrayNumber( number_put, x, y );
+						}
 
+
+						canHit = false;
 						obj_hit = null;
 						obj_selected = null;
 						x = -1;
@@ -71,14 +111,56 @@ public class Mouse : MonoBehaviour {
 				{
 					if( obj_hit.tag == "cell" )
 					{
-						x = ( int )obj_hit.name[ 0 ] - 48;
-					    y = ( int )obj_hit.name[ 2 ] - 48;
+						if(obj_hit.name.Length == 3)
+						{
+							x = ( int )obj_hit.name[ 0 ] - 48;
+							y = ( int )obj_hit.name[ 2 ] - 48;
+						}
+						else
+						{
+							if( obj_hit.name[ 1 ] == '-' )
+							{
+								x = ( int )obj_hit.name[ 0 ] - 48;
+								y = ( 10 + ( ( int )obj_hit.name[ 2 ] - 48 ) );
+							}
+							else
+							{
+								if(obj_hit.name.Length == 4 )
+								{
+									x = (  10 + ( ( int )obj_hit.name[ 1 ] - 48 ) );
+									y = ( int )obj_hit.name[ 3 ] - 48;
+								}
+								else
+								{
+									x = ( 10 + ( ( int )obj_hit.name[ 1 ] - 48 ) );
+									y = ( 10 + ( ( int )obj_hit.name[ 4 ] - 48 ) );
+								}
+							}
+							
+
+
+						}
+
 						if( GameLogic.instance.IsEmpty( x, y ) )
 						{
 							obj_selected = obj_hit;
-							obj_selected.transform.localScale = new Vector2( 1.1f, 1.1f );
+							obj_selected.transform.localScale = new Vector2( cell_big_scale, cell_big_scale);
 							BoardHandler.instance.ChangeCellSprite( obj_selected, 1 );
-							options.SetActive( true );// burayi yerine gore degistirmem gerek ;
+							// burayi yerine gore degistirmem gerek
+							if(GameLogic.instance.GetCurrentPlayer() == 1 )
+							{
+								OptionButtonTextChanger.instance.ChangeNumber( 6, player1_counter_number_6 );
+								OptionButtonTextChanger.instance.ChangeNumber( 9, player1_counter_number_9 );
+								OptionButtonTextChanger.instance.ChangeNumber( 1, player1_counter_number_1 );
+							}
+							else
+							{
+								OptionButtonTextChanger.instance.ChangeNumber( 6, player2_counter_number_6 );
+								OptionButtonTextChanger.instance.ChangeNumber( 9, player2_counter_number_9 );
+								OptionButtonTextChanger.instance.ChangeNumber( 1, player2_counter_number_1 );
+							}
+							
+							options.SetActive( true );
 						}
 
 					}
@@ -90,13 +172,99 @@ public class Mouse : MonoBehaviour {
 	#region Methods
 	public void Neutralize()
 	{
+		if( obj_selected != null )
+		{
+			options.SetActive( false );
+			options.transform.position = Vector2.zero;
+			options.transform.rotation = Quaternion.identity;
+			obj_selected.transform.localScale = new Vector2( cell_normal_scale, cell_normal_scale );
+			BoardHandler.instance.ChangeCellSprite( obj_selected, 0 );
+			obj_selected = null;
+			obj_hit = null;
+			x = -1;
+			y = -1;
+		}	
+	}
+
+	bool CanPut(int numbertoput)
+	{
+		if(GameLogic.instance.GetCurrentPlayer() == 1)
+		{
+			if( numbertoput == 6 )
+			{
+				if( player1_counter_number_6 != 0 )
+				{
+					OptionButtonTextChanger.instance.ChangeNumber( numbertoput, player1_counter_number_6 );
+					player1_counter_number_6--;
+					return true;
+				}
+			}
+			else if( numbertoput == 9 )
+			{
+				if( player1_counter_number_9 != 0 )
+				{
+					OptionButtonTextChanger.instance.ChangeNumber( numbertoput, player1_counter_number_9 );
+					player1_counter_number_9--;
+					return true;
+				}
+			}
+			else
+			{
+				if( player1_counter_number_1 != 0 )
+				{
+					OptionButtonTextChanger.instance.ChangeNumber( numbertoput, player1_counter_number_1 );
+					player1_counter_number_1--;
+					return true;
+				}
+			}
+		}
+		else
+		{
+			if( numbertoput == 6 )
+			{
+				if( player2_counter_number_6 != 0 )
+				{
+					OptionButtonTextChanger.instance.ChangeNumber( numbertoput, player2_counter_number_6 );
+					player2_counter_number_6--;
+					return true;
+				}
+			}
+			else if( numbertoput == 9 )
+			{
+				if( player2_counter_number_9 != 0 )
+				{
+					OptionButtonTextChanger.instance.ChangeNumber( numbertoput, player2_counter_number_9 );
+					player2_counter_number_9--;
+					return true;
+				}
+			}
+			else
+			{
+				if( player2_counter_number_1 != 0 )
+				{
+					OptionButtonTextChanger.instance.ChangeNumber( numbertoput, player2_counter_number_1 );
+					player2_counter_number_1--;
+					return true;
+				}
+			}
+		}
+
+		return false;
+			
+	}
+
+	void ToogleOptions(bool open)
+	{
+		if( open )
+		{
+
+		}
+		else
+		{
+
+		}
+
 		options.SetActive( false );
-		obj_selected.transform.localScale = Vector2.one;
-		BoardHandler.instance.ChangeCellSprite( obj_selected, 0 );
-		obj_selected = null;
-		obj_hit = null;
-		x = -1;
-		y = -1;
 	}
 	#endregion
 

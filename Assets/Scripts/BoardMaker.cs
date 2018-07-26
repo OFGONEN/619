@@ -90,6 +90,10 @@ public class BoardMaker : MonoBehaviour {
 		return tableSize;
 	}
 
+	public float GetCellScale()
+	{
+		return cellScale;
+	}
 	
 	#endregion
 	

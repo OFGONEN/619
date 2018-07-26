@@ -2,6 +2,7 @@
 Created By OFGONEN
 */
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PanelHandler : MonoBehaviour {
 
@@ -11,6 +12,7 @@ public class PanelHandler : MonoBehaviour {
 	public GameObject panel_menu;
 	public GameObject panel_pause;
 	public GameObject panel_endgame;
+	public Text       text_winner_name; 
 	#endregion
 
 	private void Awake()
@@ -25,17 +27,42 @@ public class PanelHandler : MonoBehaviour {
 	#region Methods
 	public void MenuPanel(bool open )
 	{
+		ToogleMouse( !open );
+		ToogleRotate( panel_menu );
 		panel_menu.SetActive( open );
 	}
 
 	public void PausePanel(bool open)
 	{
+		ToogleMouse( !open );
+		ToogleRotate( panel_pause );
 		panel_pause.SetActive( open );
 	}
 
 	public void EndGamePanel(bool open)
 	{
+		ToogleMouse( !open );
+		ToogleRotate(panel_endgame);
+		WinnerName();
 		panel_endgame.SetActive( open );
+	}
+
+	void ToogleMouse(bool open)
+	{
+		Mouse.instance.gameObject.SetActive( open );
+	}
+
+	void ToogleRotate( GameObject panel)
+	{
+		if( GameLogic.instance.GetCurrentPlayer() == 1 )
+			panel.transform.localScale = Vector3.one;
+		else
+			panel.transform.localScale = new Vector3( 1, -1, 1 );
+	}
+
+	public void WinnerName()
+	{
+		text_winner_name.text = GameLogic.instance.GetWinner();
 	}
 	#endregion
 	
