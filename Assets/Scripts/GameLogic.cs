@@ -191,9 +191,18 @@ public class GameLogic : MonoBehaviour {
 		BoardHandler.instance.ChangeCellSprite( array_cells[ cell1_X, cell1_Y ], 2 );
 		BoardHandler.instance.ChangeCellSprite( array_cells[ cell2_X, cell2_Y ], 2 );
 		BoardHandler.instance.ChangeCellSprite( array_cells[ cell3_X, cell3_Y ], 2 );
-		BoardHandler.instance.ChangeNumberSprite( array_cells[ cell1_X, cell1_Y ], array_numbers[ cell1_X, cell1_Y ], true );
-		BoardHandler.instance.ChangeNumberSprite( array_cells[ cell2_X, cell2_Y ], array_numbers[ cell2_X, cell2_Y ], true );
-		BoardHandler.instance.ChangeNumberSprite( array_cells[ cell3_X, cell3_Y ], array_numbers[ cell3_X, cell3_Y ], true );
+		if( is_in_UpSideDown )
+		{
+			BoardHandler.instance.ChangeNumberSprite( array_cells[ cell1_X, cell1_Y ], array_numbers[ cell1_X, cell1_Y ] == 1 ? 1 : 15 - array_numbers[ cell1_X, cell1_Y ], true );
+			BoardHandler.instance.ChangeNumberSprite( array_cells[ cell2_X, cell2_Y ], array_numbers[ cell2_X, cell2_Y ] == 1 ? 1 : 15 - array_numbers[ cell2_X, cell2_Y ], true );
+			BoardHandler.instance.ChangeNumberSprite( array_cells[ cell3_X, cell3_Y ], array_numbers[ cell3_X, cell3_Y ] == 1 ? 1 : 15 - array_numbers[ cell3_X, cell3_Y ], true );
+		}
+		else
+		{
+			BoardHandler.instance.ChangeNumberSprite( array_cells[ cell1_X, cell1_Y ], array_numbers[ cell1_X, cell1_Y ], true );
+			BoardHandler.instance.ChangeNumberSprite( array_cells[ cell2_X, cell2_Y ], array_numbers[ cell2_X, cell2_Y ], true );
+			BoardHandler.instance.ChangeNumberSprite( array_cells[ cell3_X, cell3_Y ], array_numbers[ cell3_X, cell3_Y ], true );
+		}
 
 	}
 
@@ -342,12 +351,12 @@ public class GameLogic : MonoBehaviour {
 		{
 			if(number_selected_X + 1 < size.x && array_numbers[number_selected_X + 1 , number_selected_Y ] == 1 )
 			{
-				if( number_selected_X + 2 > size.x )
+				if( number_selected_X + 2 < size.x )
 				{
 					if( is_in_UpSideDown && array_numbers[ number_selected_X + 2, number_selected_Y ] == 6 )
-						FindScore( number_selected_X, number_selected_Y, number_selected_X + 1, number_selected_Y + 1, number_selected_X + 2, number_selected_Y + 2 );
+						FindScore( number_selected_X, number_selected_Y, number_selected_X + 1, number_selected_Y, number_selected_X + 2, number_selected_Y  );
 					else if(!is_in_UpSideDown && array_numbers[ number_selected_X + 2, number_selected_Y ] == 9 )
-						FindScore( number_selected_X, number_selected_Y, number_selected_X + 1, number_selected_Y + 1, number_selected_X + 2, number_selected_Y + 2 );
+						FindScore( number_selected_X, number_selected_Y, number_selected_X + 1, number_selected_Y , number_selected_X + 2, number_selected_Y );
 
 				}
 			}
@@ -358,7 +367,7 @@ public class GameLogic : MonoBehaviour {
 			{
 				if( is_in_UpSideDown )
 				{
-					if(array_numbers[number_selected_X - 1 , number_selected_Y] == 6 )
+					if( array_numbers[number_selected_X - 1 , number_selected_Y] == 6 )
 					{
 						if( number_selected_X + 1 < size.x && array_numbers[ number_selected_X + 1, number_selected_Y ] == 6 )
 							FindScore( number_selected_X, number_selected_Y, number_selected_X - 1, number_selected_Y, number_selected_X + 1, number_selected_Y );
@@ -386,9 +395,9 @@ public class GameLogic : MonoBehaviour {
 				if( number_selected_X - 2 >= 0  )
 				{
 					if( is_in_UpSideDown && array_numbers[ number_selected_X - 2, number_selected_Y ] == 9 )
-						FindScore( number_selected_X, number_selected_Y, number_selected_X - 1, number_selected_Y - 1, number_selected_X - 2, number_selected_Y - 2 );
+						FindScore( number_selected_X, number_selected_Y, number_selected_X - 1, number_selected_Y, number_selected_X - 2, number_selected_Y);
 					else if( !is_in_UpSideDown && array_numbers[ number_selected_X - 2, number_selected_Y ] == 6 )
-						FindScore( number_selected_X, number_selected_Y, number_selected_X - 1, number_selected_Y - 1, number_selected_X - 2, number_selected_Y - 2 );
+						FindScore( number_selected_X, number_selected_Y, number_selected_X - 1, number_selected_Y , number_selected_X - 2, number_selected_Y );
 				}
 			}
 		}
@@ -541,7 +550,7 @@ public class GameLogic : MonoBehaviour {
 				{
 					if( is_in_UpSideDown && array_numbers[ number_selected_X + 2, number_selected_Y + 2 ] == 6 )
 						FindScore( number_selected_X, number_selected_Y, number_selected_X + 1, number_selected_Y + 1, number_selected_X + 2, number_selected_Y + 2 );
-					else if( !is_in_UpSideDown && array_numbers[ number_selected_X - 2, number_selected_Y + 2 ] == 9 )
+					else if( !is_in_UpSideDown && array_numbers[ number_selected_X + 2, number_selected_Y + 2 ] == 9 )
 						FindScore( number_selected_X, number_selected_Y, number_selected_X + 1, number_selected_Y + 1, number_selected_X + 2, number_selected_Y + 2 );
 				}
 			}

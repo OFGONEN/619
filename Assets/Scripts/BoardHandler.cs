@@ -13,6 +13,7 @@ public class BoardHandler : MonoBehaviour {
 	public Sprite[] sprites_cells;
 	public Sprite[] sprites_numbers;
 
+	private SpriteRenderer spriteRenderer;
 
 	#endregion
 
@@ -28,7 +29,16 @@ public class BoardHandler : MonoBehaviour {
 	#region Methods
 	public void ChangeCellSprite(GameObject cell , int number)
 	{
-		cell.GetComponent<SpriteRenderer>().sprite = sprites_cells[ number ];
+		spriteRenderer = cell.GetComponent<SpriteRenderer>();
+		if( number == 1 )
+		{
+			spriteRenderer.sortingOrder = 3;
+		}
+		else
+			spriteRenderer.sortingOrder = 2;
+		spriteRenderer.sprite = sprites_cells[ number ];
+		spriteRenderer = null;
+
 	}
 
 	public void ChangeNumberSprite(GameObject cell , int number , bool white)
