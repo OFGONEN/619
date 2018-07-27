@@ -235,7 +235,11 @@ public class Mouse : MonoBehaviour {
 
 	void AddBump(int x , int y)
 	{
-		options.transform.position += new Vector3( x * 0.1f, y * 0.1f, 0 );
+		if(GameLogic.instance.GetCurrentPlayer() == 1)
+			options.transform.position += new Vector3( x * 0.1f, y * 0.1f, 0 );
+		else
+			options.transform.position -= new Vector3( x * 0.1f, y * 0.1f, 0 );
+
 	}
 
 	void ResetMouse()
