@@ -147,7 +147,7 @@ public class OptionsHandler : MonoBehaviour {
 	{
 		if( player1Name == "default" || player1Name == "" )
 		{
-			player1.text = "PLAYER1";
+			player1.text = "Player1";
 		}
 		else
 		{
@@ -156,7 +156,7 @@ public class OptionsHandler : MonoBehaviour {
 
 		if( player2Name == "default" || player1Name == "" )
 		{
-			player2.text = "PLAYER2";
+			player2.text = "Player2";
 		}
 		else
 		{

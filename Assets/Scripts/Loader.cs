@@ -21,19 +21,18 @@ public class Loader : MonoBehaviour {
 
 	// Burayi yayinlamadan once 1 kere calistir:DD 
 
-	//private void Start()
-	//{
-	//	PlayerPrefs.SetInt( "Sound", 1 );
-	//	PlayerPrefs.SetInt( "Music", 1 );
-	//	PlayerPrefs.SetInt( "Table Size", 1 );
-	//	PlayerPrefs.SetString( "Player1 Name", "PLAYER1" );
-	//	PlayerPrefs.SetString( "Player2 Name", "PLAYER2" );
-	//	Debug.Log( PlayerPrefs.GetInt( "Sound" ) );
-	//	Debug.Log( PlayerPrefs.GetInt( "Music" ) );
-	//	Debug.Log( PlayerPrefs.GetInt( "Table Size" ) );
-	//	Debug.Log( PlayerPrefs.GetString( "Player1 Name".ToUpper() ) );
-	//	Debug.Log( PlayerPrefs.GetString( "Player2 Name".ToUpper() ) );
-	//}
+	private void Start()
+	{
+		if( PlayerPrefs.GetInt( "Start" ) == 0 )
+		{
+			PlayerPrefs.SetInt( "Start", 1 );
+			PlayerPrefs.SetInt( "Sound", 1 );
+			PlayerPrefs.SetInt( "Music", 1 );
+			PlayerPrefs.SetInt( "Table Size", 0 );
+			PlayerPrefs.SetString( "Player1 Name", "PLAYER1" );
+			PlayerPrefs.SetString( "Player2 Name", "PLAYER2" );
+		}
+	}
 
 	#region Methods
 	public void LoadMenu()
