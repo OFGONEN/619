@@ -169,14 +169,14 @@ public class OptionsHandler : MonoBehaviour {
 	#region ButtonActions 
 	public void OpenKeyboardPlayer1()
 	{
-		keyboard = TouchScreenKeyboard.Open( "Player1", TouchScreenKeyboardType.Default );
+		keyboard = TouchScreenKeyboard.Open( player1Name, TouchScreenKeyboardType.Default );
 		bufferText = player1;
 		bufferPrefName = "Player1 Name";
 	}
 
 	public void OpenKeyboardPlayer2()
 	{
-		keyboard = TouchScreenKeyboard.Open( "Player2", TouchScreenKeyboardType.Default );
+		keyboard = TouchScreenKeyboard.Open( player2Name, TouchScreenKeyboardType.Default );
 		bufferText = player2;
 		bufferPrefName = "Player2 Name";
 	}

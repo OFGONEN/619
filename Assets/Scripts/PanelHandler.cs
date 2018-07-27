@@ -55,9 +55,9 @@ public class PanelHandler : MonoBehaviour {
 	void ToogleRotate( GameObject panel)
 	{
 		if( GameLogic.instance.GetCurrentPlayer() == 1 )
-			panel.transform.localScale = Vector3.one;
+			panel.transform.localRotation = Quaternion.Euler(0,0,0);
 		else
-			panel.transform.localScale = new Vector3( 1, -1, 1 );
+			panel.transform.localRotation = Quaternion.Euler( 0, 0, 180 );
 	}
 
 	public void WinnerName()

@@ -73,6 +73,14 @@ public class BoardHandler : MonoBehaviour {
 		UIAnimationHandler.instance.EndTurn( player );
 	}
 
+	public void ToogleMouse(int open)
+	{
+		if( open == 1 )
+			Mouse.instance.gameObject.SetActive( true );
+		else
+			Mouse.instance.gameObject.SetActive( false );
+	}
+
 	#endregion
 
 }
