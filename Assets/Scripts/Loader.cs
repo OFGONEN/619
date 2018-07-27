@@ -18,9 +18,6 @@ public class Loader : MonoBehaviour {
 			Destroy( gameObject );
 	}
 
-
-	// Burayi yayinlamadan once 1 kere calistir:DD 
-
 	private void Start()
 	{
 		if( PlayerPrefs.GetInt( "Start" ) == 0 )

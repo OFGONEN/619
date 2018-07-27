@@ -64,6 +64,11 @@ public class PanelHandler : MonoBehaviour {
 	{
 		text_winner_name.text = GameLogic.instance.GetWinner();
 	}
+
+	public void ToogleBackButton(bool open)
+	{
+		BackButton.instance.enabled = open;
+	}
 	#endregion
 	
 	}
