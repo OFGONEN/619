@@ -676,7 +676,7 @@ public class GameLogic : MonoBehaviour {
 			return score_player2;
 	}
 
-	public bool InUpsideDown()
+	public bool GetIsInUpsideDown()
 	{
 		return is_in_UpSideDown;
 	}

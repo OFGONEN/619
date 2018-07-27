@@ -72,7 +72,7 @@ public class Mouse : MonoBehaviour {
 
 						int number_put = ( int )obj_hit.name[ 0 ] - 48;
 
-						if( GameLogic.instance.InUpsideDown() )
+						if( GameLogic.instance.GetIsInUpsideDown() )
 						{
 							if(number_put == 1 && CanPut(number_put) )
 							{
@@ -182,20 +182,38 @@ public class Mouse : MonoBehaviour {
 
 	void DecideLocation()
 	{
+		bool upsidedown = GameLogic.instance.GetIsInUpsideDown();
 		if(x <= size_table)
 		{
 			if(   y < size_y - size_table )
-				DownRight();
+			{
+				if( upsidedown )
+					UpLeft();
+				else
+					DownRight();
+			}
 			else
-				DownLeft(); 
+			{
+				if( upsidedown )
+					UpRight();
+				else
+					DownLeft();
+			}
 		}
 		else if( y >= size_y - size_table )
 		{
-			UpLeft();
+			if( upsidedown )
+				DownRight();
+			else
+				UpLeft();
 		}
 		else
 		{
-			UpRight();
+			if( upsidedown )
+				DownLeft();
+			else
+				UpRight();
+
 		}
 	}
 
