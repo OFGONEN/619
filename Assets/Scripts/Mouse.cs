@@ -18,9 +18,11 @@ public class Mouse : MonoBehaviour {
 	private float cell_big_scale;
 
 	int x , y;
-	int size_x , size_y;
+	int size_x , size_y , size_table;
 
-	int player1_counter_number_1 , player1_counter_number_6 , player1_counter_number_9 , player2_counter_number_1 , player2_counter_number_6 , player2_counter_number_9;
+	int player1_counter_number_1 , player1_counter_number_6 , player1_counter_number_9;
+	int player2_counter_number_1 , player2_counter_number_6 , player2_counter_number_9;
+
 
 	#endregion
 
@@ -39,6 +41,11 @@ public class Mouse : MonoBehaviour {
 		x = (int)BoardMaker.instance.GetTableSize().x;
 		y = ( int )BoardMaker.instance.GetTableSize().y;
 
+		size_table = PlayerPrefs.GetInt( "Table Size" ) + 1;
+		size_x = ( int )BoardMaker.instance.GetTableSize().x - 1;
+		size_y = ( int )BoardMaker.instance.GetTableSize().y - 1;
+
+
 		int counter = ( x * y )/6;
 		player1_counter_number_6 = counter;
 		player1_counter_number_1 = counter;
@@ -47,7 +54,7 @@ public class Mouse : MonoBehaviour {
 		player2_counter_number_1 = counter;
 		player2_counter_number_9 = counter;
 		canHit = true;
-		
+
 	}
 
 	void Update () 
@@ -150,8 +157,87 @@ public class Mouse : MonoBehaviour {
 			}
 		}
 	}
-	
+
 	#region Methods
+	void OpenOptions() // optinlarin guzel bir yerde cikmasi icin bu 
+	{
+		options.transform.position = obj_selected.transform.position;
+		DecideLocation();
+		if( GameLogic.instance.GetCurrentPlayer() == 1 )
+		{
+			options.transform.rotation = Quaternion.Euler( 0, 0, 0 );
+			OptionButtonTextChanger.instance.ChangeNumber( 6, player1_counter_number_6 );
+			OptionButtonTextChanger.instance.ChangeNumber( 9, player1_counter_number_9 );
+			OptionButtonTextChanger.instance.ChangeNumber( 1, player1_counter_number_1 );
+		}
+		else
+		{
+			options.transform.rotation = Quaternion.Euler( 0, 0, 180 );
+			OptionButtonTextChanger.instance.ChangeNumber( 6, player2_counter_number_6 );
+			OptionButtonTextChanger.instance.ChangeNumber( 9, player2_counter_number_9 );
+			OptionButtonTextChanger.instance.ChangeNumber( 1, player2_counter_number_1 );
+		}
+		options.SetActive( true );
+	}
+
+	void DecideLocation()
+	{
+		if(x <= size_table)
+		{
+			if(   y < size_y - size_table )
+				DownRight();
+			else
+				DownLeft(); 
+		}
+		else if( y >= size_y - size_table )
+		{
+			UpLeft();
+		}
+		else
+		{
+			UpRight();
+		}
+	}
+
+
+
+	void UpRight()
+	{
+		options.transform.GetChild( 0 ).localPosition = new Vector2( 0, 1 );
+		options.transform.GetChild( 1 ).localPosition = new Vector2( 1, 1 );
+		options.transform.GetChild( 2 ).localPosition = new Vector2( 1, 0 );
+		AddBump( 1, 1 );
+	}
+
+	void UpLeft()
+	{
+		options.transform.GetChild( 0 ).localPosition = new Vector2( -1, 0 );
+		options.transform.GetChild( 1 ).localPosition = new Vector2( -1, 1 );
+		options.transform.GetChild( 2 ).localPosition = new Vector2( 0, 1 );
+		AddBump( -1, 1 );
+	}
+
+	void DownRight()
+	{
+		options.transform.GetChild( 0 ).localPosition = new Vector2( 0, -1 );
+		options.transform.GetChild( 1 ).localPosition = new Vector2( 1, -1 );
+		options.transform.GetChild( 2 ).localPosition = new Vector2( 1, 0 );
+		AddBump( 1, -1 );
+	}
+
+	void DownLeft()
+	{
+		options.transform.GetChild( 0 ).localPosition = new Vector2( -1, 0 );
+		options.transform.GetChild( 1 ).localPosition = new Vector2( -1, -1 );
+		options.transform.GetChild( 2 ).localPosition = new Vector2( 0, -1 );
+		AddBump( -1, -1 );
+	}
+
+	void AddBump(int x , int y)
+	{
+		options.transform.position += new Vector3( x * 0.1f, y * 0.1f, 0 );
+	}
+
 	void ResetMouse()
 	{
 		obj_selected.transform.localScale = new Vector2( cell_normal_scale, cell_normal_scale );
@@ -245,23 +331,7 @@ public class Mouse : MonoBehaviour {
 			
 	}
 
-	void OpenOptions() // optinlarin guzel bir yerde cikmasi icin bu 
-	{
-
-		if( GameLogic.instance.GetCurrentPlayer() == 1 )
-		{
-			OptionButtonTextChanger.instance.ChangeNumber( 6, player1_counter_number_6 );
-			OptionButtonTextChanger.instance.ChangeNumber( 9, player1_counter_number_9 );
-			OptionButtonTextChanger.instance.ChangeNumber( 1, player1_counter_number_1 );
-		}
-		else
-		{
-			OptionButtonTextChanger.instance.ChangeNumber( 6, player2_counter_number_6 );
-			OptionButtonTextChanger.instance.ChangeNumber( 9, player2_counter_number_9 );
-			OptionButtonTextChanger.instance.ChangeNumber( 1, player2_counter_number_1 );
-		}
-		options.SetActive(true);
-	}
+	
 	#endregion
 
 }

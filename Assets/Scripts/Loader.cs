@@ -26,8 +26,8 @@ public class Loader : MonoBehaviour {
 	//	PlayerPrefs.SetInt( "Sound", 1 );
 	//	PlayerPrefs.SetInt( "Music", 1 );
 	//	PlayerPrefs.SetInt( "Table Size", 1 );
-	//	PlayerPrefs.SetString( "Player1 Name", "OFG" );
-	//	PlayerPrefs.SetString( "Player2 Name", "M6HD9" );
+	//	PlayerPrefs.SetString( "Player1 Name", "PLAYER1" );
+	//	PlayerPrefs.SetString( "Player2 Name", "PLAYER2" );
 	//	Debug.Log( PlayerPrefs.GetInt( "Sound" ) );
 	//	Debug.Log( PlayerPrefs.GetInt( "Music" ) );
 	//	Debug.Log( PlayerPrefs.GetInt( "Table Size" ) );
