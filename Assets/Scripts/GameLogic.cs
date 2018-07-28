@@ -263,14 +263,14 @@ public class GameLogic : MonoBehaviour {
 				
 			}
 		}
-		else if (number_toPut == 9 )
+		else if( number_toPut == 9 )
 		{
-			if( number_selected_Y - 1 >= 0 && array_numbers[ number_selected_X, number_selected_Y - 1 ] == 1 )
+			if( number_selected_Y + 1 < size.y && array_numbers[ number_selected_X, number_selected_Y + 1 ] == 1 )
 			{
-				if( number_selected_Y - 2 >= 0 )
+				if( number_selected_Y + 2 < size.y )
 				{
-					if( array_numbers[ number_selected_X, number_selected_Y - 2 ] == 9 )
-						FindScore( number_selected_X, number_selected_Y, number_selected_X, number_selected_Y - 1, number_selected_X, number_selected_Y - 2 );
+					if( array_numbers[ number_selected_X, number_selected_Y + 2 ] == 9 )
+						FindScore( number_selected_X, number_selected_Y, number_selected_X, number_selected_Y + 1, number_selected_X, number_selected_Y + 2 );
 				}
 			}
 		}
@@ -676,7 +676,7 @@ public class GameLogic : MonoBehaviour {
 			return score_player2;
 	}
 
-	public bool InUpsideDown()
+	public bool GetIsInUpsideDown()
 	{
 		return is_in_UpSideDown;
 	}

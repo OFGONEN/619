@@ -147,7 +147,7 @@ public class OptionsHandler : MonoBehaviour {
 	{
 		if( player1Name == "default" || player1Name == "" )
 		{
-			player1.text = "PLAYER1";
+			player1.text = "Player1";
 		}
 		else
 		{
@@ -156,7 +156,7 @@ public class OptionsHandler : MonoBehaviour {
 
 		if( player2Name == "default" || player1Name == "" )
 		{
-			player2.text = "PLAYER2";
+			player2.text = "Player2";
 		}
 		else
 		{
@@ -169,14 +169,14 @@ public class OptionsHandler : MonoBehaviour {
 	#region ButtonActions 
 	public void OpenKeyboardPlayer1()
 	{
-		keyboard = TouchScreenKeyboard.Open( "Player1", TouchScreenKeyboardType.Default );
+		keyboard = TouchScreenKeyboard.Open( player1Name, TouchScreenKeyboardType.Default );
 		bufferText = player1;
 		bufferPrefName = "Player1 Name";
 	}
 
 	public void OpenKeyboardPlayer2()
 	{
-		keyboard = TouchScreenKeyboard.Open( "Player2", TouchScreenKeyboardType.Default );
+		keyboard = TouchScreenKeyboard.Open( player2Name, TouchScreenKeyboardType.Default );
 		bufferText = player2;
 		bufferPrefName = "Player2 Name";
 	}
