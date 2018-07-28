@@ -73,10 +73,15 @@ public class BoardMaker : MonoBehaviour {
 		int tableNumber = PlayerPrefs.GetInt( "Table Size" );
 		if( tableNumber == 0 )
 		{
+			tableSize.x = 6;
+			tableSize.y = 4;
+		}
+		else if( tableNumber == 1 )
+		{
 			tableSize.x = 9;
 			tableSize.y = 6;
 		}
-		else if(tableNumber == 1 )
+		else if(tableNumber == 2 )
 		{
 			tableSize.x = 12;
 			tableSize.y = 8;

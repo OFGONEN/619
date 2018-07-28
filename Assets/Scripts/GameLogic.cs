@@ -1,6 +1,7 @@
 ﻿/*
 Created By OFGONEN
 */
+using System.Collections.Generic;
 using UnityEngine;
 
 public class GameLogic : MonoBehaviour {
@@ -14,7 +15,7 @@ public class GameLogic : MonoBehaviour {
 	private Vector2 size;
 	private GameObject[,] array_cells;
 	private int[,] array_numbers;
-
+	private List<Vector2> list_empty_cells;
 
 	private int score_player1;
 	private int score_player2;
@@ -30,6 +31,7 @@ public class GameLogic : MonoBehaviour {
 	private bool is_in_UpSideDown;
 	private bool can_GoUpSideDown;
 	private bool can_EndTurn;
+	private bool did_putted_number;
 
 	private int number_selected_X;
 	private int number_selected_Y;
@@ -49,36 +51,66 @@ public class GameLogic : MonoBehaviour {
 		array_numbers = new int[ ( int )size.x, ( int )size.y ];
 		counter_empty_cells = ( int )( size.x * size.y );
 		currentPlayer = 1;
+		list_empty_cells = new List<Vector2>();
 	}
 
 	#region Methods
 
 	public void EndTurn()
 	{
-		if(can_EndTurn )
+		if(can_EndTurn  )
 		{
+			Counter.instance.TooglePause(0);
 			Mouse.instance.Neutralize();
-			if( is_in_UpSideDown )
+			if( !did_putted_number )
 			{
-				BoardHandler.instance.EndUpsideDown( currentPlayer );
-				ChangeNumbers();
+				if( currentPlayer == 1  )
+					PutRandomNumber( Mouse.instance.DecreaseNumber( 1 ) );
+				else
+					PutRandomNumber( Mouse.instance.DecreaseNumber( 2 ) );
+				if( counter_empty_cells == 0 )
+				{
+					EndGame();
+					return;
+				}
 			}
-			else
+
+			if(Mouse.instance.HasNumbertoPut( currentPlayer == 1 ? 2 : 1 ) )
 			{
-				UIAnimationHandler.instance.EndTurn( currentPlayer );
+				if( is_in_UpSideDown )
+				{
+					BoardHandler.instance.EndUpsideDown( currentPlayer );
+					ChangeNumbers();
+				}
+				else
+				{
+					UIAnimationHandler.instance.EndTurn( currentPlayer );
+				}
+				currentPlayer = 3 - currentPlayer;
+				score_toPut = 0;
+				number_toPut = 0;
+				is_finded_Score = false;
+				can_GoUpSideDown = false;
+				is_in_UpSideDown = false;
+				can_EndTurn = false;
+				did_putted_number = false;
+				counter_combo = 0;
+				Mouse.instance.canHit = true;
 			}
-			currentPlayer = 3 - currentPlayer;
-			score_toPut = 0;
-			number_toPut = 0;
-			is_finded_Score = false;
-			can_GoUpSideDown = false;
-			is_in_UpSideDown = false;
-			can_EndTurn = false;
-			counter_combo = 0;
-			Mouse.instance.canHit = true;
 		}
 	}
 
+	void PutRandomNumber(int number)
+	{
+		if(number != 0)
+		{
+			Vector2 cord_cell = list_empty_cells[ Random.Range( 0, list_empty_cells.Count ) ];
+			array_numbers[ ( int )cord_cell.x, ( int )cord_cell.y ] = number;
+			list_empty_cells.Remove( new Vector2( ( int )cord_cell.x, ( int )cord_cell.y ) );
+			counter_empty_cells--;
+			BoardHandler.instance.ChangeNumberSprite( array_cells[ ( int )cord_cell.x, ( int )cord_cell.y ], number, false );
+		}
+	}
 	public void GoUpsideDown()
 	{
 		if( can_GoUpSideDown )
@@ -99,15 +131,19 @@ public class GameLogic : MonoBehaviour {
 		PanelHandler.instance.EndGamePanel( true );
 	}
 
+
 	public void UpdateArrayCell(GameObject cell , int x, int y)
 	{
 		array_cells[ x, y ] = cell;
+		list_empty_cells.Add( new Vector2( x, y ) );
 	}
 
 	public void UpdateArrayNumber(int numberToPut,int x , int y)
 	{
 		number_selected_X = x;
 		number_selected_Y = y;
+		list_empty_cells.Remove( new Vector2(x , y) );
+		did_putted_number = true;
 		number_toPut = numberToPut;
 
 		array_numbers[ x, y ] = numberToPut;
@@ -137,9 +173,17 @@ public class GameLogic : MonoBehaviour {
 		}
 		else
 		{
-			can_GoUpSideDown = false;
-			can_EndTurn = true;
-			UIHandler.instance.ChangeToOption( true );
+			if(!Mouse.instance.HasNumbertoPut(currentPlayer == 1 ? 2 : 1))
+			{
+				Mouse.instance.canHit = true;
+				return;
+			}
+			else
+			{
+				can_GoUpSideDown = false;
+				can_EndTurn = true;
+				UIHandler.instance.ChangeToOption( true );
+			}
 		}
 	}
 
@@ -167,9 +211,9 @@ public class GameLogic : MonoBehaviour {
 	void DeclareScore()
 	{
 		if( is_in_UpSideDown )
-			score_toPut = score_upsidedown * counter_combo + counter_combo - 1;
+			score_toPut = score_upsidedown  + counter_combo - 1;
 		else
-			score_toPut = score_normal * counter_combo + counter_combo - 1;
+			score_toPut = score_normal  + counter_combo - 1;
 
 		if(currentPlayer == 1 )
 		{
@@ -188,6 +232,7 @@ public class GameLogic : MonoBehaviour {
 
 	void ScoredLine( int cell1_X , int cell1_Y , int cell2_X , int cell2_Y , int cell3_X , int cell3_Y)
 	{
+		Debug.Log( "ScoredLine" );
 		BoardHandler.instance.ChangeCellSprite( array_cells[ cell1_X, cell1_Y ], 2 );
 		BoardHandler.instance.ChangeCellSprite( array_cells[ cell2_X, cell2_Y ], 2 );
 		BoardHandler.instance.ChangeCellSprite( array_cells[ cell3_X, cell3_Y ], 2 );
@@ -231,6 +276,7 @@ public class GameLogic : MonoBehaviour {
 	#region Look Methods
 	void LookLeft()
 	{
+		Debug.Log( "LookLeft" );
 		if( number_toPut == 6 )
 		{
 			if( number_selected_Y - 1 >= 0 && array_numbers[ number_selected_X, number_selected_Y - 1 ] == 1 )
@@ -238,7 +284,7 @@ public class GameLogic : MonoBehaviour {
 				if( number_selected_Y - 2 >= 0)
 				{
 					if( array_numbers[ number_selected_X, number_selected_Y - 2 ] == 6 )
-						FindScore( number_selected_X, number_selected_Y, number_selected_X, number_selected_Y - 1, number_selected_X, number_selected_Y - 2 );
+						FindedScore( number_selected_X, number_selected_Y, number_selected_X, number_selected_Y - 1, number_selected_X, number_selected_Y - 2 );
 				}
 			}
 		}
@@ -250,14 +296,14 @@ public class GameLogic : MonoBehaviour {
 					{
 						if( number_selected_Y + 1 < size.y && array_numbers[ number_selected_X, number_selected_Y + 1 ] == 6 )
 						{
-							FindScore( number_selected_X, number_selected_Y, number_selected_X, number_selected_Y + 1, number_selected_X, number_selected_Y - 1 );
+							FindedScore( number_selected_X, number_selected_Y, number_selected_X, number_selected_Y + 1, number_selected_X, number_selected_Y - 1 );
 						}
 					}
 					else if( array_numbers[ number_selected_X, number_selected_Y - 1 ] == 9 )
 					{
 						if( number_selected_Y + 1 < size.y && array_numbers[ number_selected_X, number_selected_Y + 1 ] == 9 )
 						{
-							FindScore( number_selected_X, number_selected_Y, number_selected_X, number_selected_Y + 1, number_selected_X, number_selected_Y - 1 );
+							FindedScore( number_selected_X, number_selected_Y, number_selected_X, number_selected_Y + 1, number_selected_X, number_selected_Y - 1 );
 						}
 					}
 				
@@ -270,13 +316,14 @@ public class GameLogic : MonoBehaviour {
 				if( number_selected_Y + 2 < size.y )
 				{
 					if( array_numbers[ number_selected_X, number_selected_Y + 2 ] == 9 )
-						FindScore( number_selected_X, number_selected_Y, number_selected_X, number_selected_Y + 1, number_selected_X, number_selected_Y + 2 );
+						FindedScore( number_selected_X, number_selected_Y, number_selected_X, number_selected_Y + 1, number_selected_X, number_selected_Y + 2 );
 				}
 			}
 		}
 	}
 	void LookRight()
 	{
+		Debug.Log( "LookRight" );
 		if( number_toPut == 6 )
 		{
 			if( number_selected_Y + 1 < size.y && array_numbers[ number_selected_X, number_selected_Y + 1 ] == 1 )
@@ -285,11 +332,11 @@ public class GameLogic : MonoBehaviour {
 				{
 					if( is_in_UpSideDown && array_numbers[ number_selected_X, number_selected_Y + 2 ] == 6 )
 					{
-						FindScore( number_selected_X, number_selected_Y, number_selected_X, number_selected_Y + 1, number_selected_X, number_selected_Y + 2 );
+						FindedScore( number_selected_X, number_selected_Y, number_selected_X, number_selected_Y + 1, number_selected_X, number_selected_Y + 2 );
 					}
 					else if( !is_in_UpSideDown && array_numbers[ number_selected_X, number_selected_Y + 2 ] == 9 )
 					{
-						FindScore( number_selected_X, number_selected_Y, number_selected_X, number_selected_Y + 1, number_selected_X, number_selected_Y + 2 );
+						FindedScore( number_selected_X, number_selected_Y, number_selected_X, number_selected_Y + 1, number_selected_X, number_selected_Y + 2 );
 					}
 				}
 			}
@@ -304,14 +351,14 @@ public class GameLogic : MonoBehaviour {
 					{
 						if( number_selected_Y + 1 < size.y && array_numbers[ number_selected_X, number_selected_Y + 1 ] == 6 )
 						{
-							FindScore( number_selected_X, number_selected_Y, number_selected_X, number_selected_Y + 1, number_selected_X, number_selected_Y - 1 );
+							FindedScore( number_selected_X, number_selected_Y, number_selected_X, number_selected_Y + 1, number_selected_X, number_selected_Y - 1 );
 						}
 					}
 					else if( array_numbers[ number_selected_X, number_selected_Y - 1 ] == 9 )
 					{
 						if( number_selected_Y + 1 < size.y && array_numbers[ number_selected_X, number_selected_Y + 1 ] == 9 )
 						{
-							FindScore( number_selected_X, number_selected_Y, number_selected_X, number_selected_Y + 1, number_selected_X, number_selected_Y - 1 );
+							FindedScore( number_selected_X, number_selected_Y, number_selected_X, number_selected_Y + 1, number_selected_X, number_selected_Y - 1 );
 						}
 					}
 				}
@@ -321,7 +368,7 @@ public class GameLogic : MonoBehaviour {
 					{
 						if( number_selected_Y + 1 < size.y && array_numbers[ number_selected_X, number_selected_Y + 1 ] == 9 )
 						{
-							FindScore( number_selected_X, number_selected_Y, number_selected_X, number_selected_Y + 1, number_selected_X, number_selected_Y - 1 );
+							FindedScore( number_selected_X, number_selected_Y, number_selected_X, number_selected_Y + 1, number_selected_X, number_selected_Y - 1 );
 						}
 					}
 				}
@@ -335,11 +382,11 @@ public class GameLogic : MonoBehaviour {
 				{
 					if( is_in_UpSideDown && array_numbers[ number_selected_X, number_selected_Y - 2 ] == 9 )
 					{
-						FindScore( number_selected_X, number_selected_Y, number_selected_X, number_selected_Y - 1, number_selected_X, number_selected_Y - 2 );
+						FindedScore( number_selected_X, number_selected_Y, number_selected_X, number_selected_Y - 1, number_selected_X, number_selected_Y - 2 );
 					}
 					else if( !is_in_UpSideDown && array_numbers[ number_selected_X, number_selected_Y - 2 ] == 6 )
 					{
-						FindScore( number_selected_X, number_selected_Y, number_selected_X, number_selected_Y - 1, number_selected_X, number_selected_Y - 2 );
+						FindedScore( number_selected_X, number_selected_Y, number_selected_X, number_selected_Y - 1, number_selected_X, number_selected_Y - 2 );
 					}
 				}
 			}
@@ -347,6 +394,7 @@ public class GameLogic : MonoBehaviour {
 	}
 	void LookDown()
 	{
+		Debug.Log( "LookDown" );
 		if(number_toPut == 6 )
 		{
 			if(number_selected_X + 1 < size.x && array_numbers[number_selected_X + 1 , number_selected_Y ] == 1 )
@@ -354,9 +402,9 @@ public class GameLogic : MonoBehaviour {
 				if( number_selected_X + 2 < size.x )
 				{
 					if( is_in_UpSideDown && array_numbers[ number_selected_X + 2, number_selected_Y ] == 6 )
-						FindScore( number_selected_X, number_selected_Y, number_selected_X + 1, number_selected_Y, number_selected_X + 2, number_selected_Y  );
+						FindedScore( number_selected_X, number_selected_Y, number_selected_X + 1, number_selected_Y, number_selected_X + 2, number_selected_Y  );
 					else if(!is_in_UpSideDown && array_numbers[ number_selected_X + 2, number_selected_Y ] == 9 )
-						FindScore( number_selected_X, number_selected_Y, number_selected_X + 1, number_selected_Y , number_selected_X + 2, number_selected_Y );
+						FindedScore( number_selected_X, number_selected_Y, number_selected_X + 1, number_selected_Y , number_selected_X + 2, number_selected_Y );
 
 				}
 			}
@@ -370,12 +418,12 @@ public class GameLogic : MonoBehaviour {
 					if( array_numbers[number_selected_X - 1 , number_selected_Y] == 6 )
 					{
 						if( number_selected_X + 1 < size.x && array_numbers[ number_selected_X + 1, number_selected_Y ] == 6 )
-							FindScore( number_selected_X, number_selected_Y, number_selected_X - 1, number_selected_Y, number_selected_X + 1, number_selected_Y );
+							FindedScore( number_selected_X, number_selected_Y, number_selected_X - 1, number_selected_Y, number_selected_X + 1, number_selected_Y );
 					}
 					else if( array_numbers[ number_selected_X - 1, number_selected_Y ] == 9 )
 					{
 						if( number_selected_X + 1 < size.x && array_numbers[ number_selected_X + 1, number_selected_Y ] == 9 )
-							FindScore( number_selected_X, number_selected_Y, number_selected_X - 1, number_selected_Y, number_selected_X + 1, number_selected_Y );
+							FindedScore( number_selected_X, number_selected_Y, number_selected_X - 1, number_selected_Y, number_selected_X + 1, number_selected_Y );
 					}
 				}
 				else
@@ -383,7 +431,7 @@ public class GameLogic : MonoBehaviour {
 					if( array_numbers[ number_selected_X - 1, number_selected_Y ] == 6 )
 					{
 						if( number_selected_X + 1 < size.x && array_numbers[ number_selected_X + 1, number_selected_Y ] == 9 )
-							FindScore( number_selected_X, number_selected_Y, number_selected_X - 1, number_selected_Y, number_selected_X + 1, number_selected_Y );
+							FindedScore( number_selected_X, number_selected_Y, number_selected_X - 1, number_selected_Y, number_selected_X + 1, number_selected_Y );
 					}
 				}
 			}
@@ -395,15 +443,16 @@ public class GameLogic : MonoBehaviour {
 				if( number_selected_X - 2 >= 0  )
 				{
 					if( is_in_UpSideDown && array_numbers[ number_selected_X - 2, number_selected_Y ] == 9 )
-						FindScore( number_selected_X, number_selected_Y, number_selected_X - 1, number_selected_Y, number_selected_X - 2, number_selected_Y);
+						FindedScore( number_selected_X, number_selected_Y, number_selected_X - 1, number_selected_Y, number_selected_X - 2, number_selected_Y);
 					else if( !is_in_UpSideDown && array_numbers[ number_selected_X - 2, number_selected_Y ] == 6 )
-						FindScore( number_selected_X, number_selected_Y, number_selected_X - 1, number_selected_Y , number_selected_X - 2, number_selected_Y );
+						FindedScore( number_selected_X, number_selected_Y, number_selected_X - 1, number_selected_Y , number_selected_X - 2, number_selected_Y );
 				}
 			}
 		}
 	}
 	void LookUpLeft()
 	{
+		Debug.Log( "LookUpLeft" );
 		if( number_toPut == 6 )
 		{
 			if( number_selected_X - 1 >= 0 && number_selected_Y - 1 >= 0  && array_numbers[ number_selected_X - 1, number_selected_Y - 1 ] == 1 )
@@ -411,7 +460,7 @@ public class GameLogic : MonoBehaviour {
 				if( number_selected_X - 2 >= 0 && number_selected_Y - 2 >= 0 )
 				{
 					if( array_numbers[ number_selected_X - 2, number_selected_Y - 2 ] == 6 )
-						FindScore( number_selected_X, number_selected_Y, number_selected_X - 1, number_selected_Y - 1, number_selected_X - 2, number_selected_Y - 2 );
+						FindedScore( number_selected_X, number_selected_Y, number_selected_X - 1, number_selected_Y - 1, number_selected_X - 2, number_selected_Y - 2 );
 				}
 			}
 		}
@@ -422,12 +471,12 @@ public class GameLogic : MonoBehaviour {
 				if(array_numbers[ number_selected_X + 1  , number_selected_Y + 1 ] == 6 )
 				{
 					if( number_selected_X - 1 >= 0 && number_selected_Y - 1 >= 0 && array_numbers[ number_selected_X - 1, number_selected_Y - 1 ] == 6 )
-						FindScore( number_selected_X, number_selected_Y, number_selected_X + 1, number_selected_Y + 1, number_selected_X - 1, number_selected_Y - 1 );
+						FindedScore( number_selected_X, number_selected_Y, number_selected_X + 1, number_selected_Y + 1, number_selected_X - 1, number_selected_Y - 1 );
 				}
 				else if( array_numbers[ number_selected_X + 1, number_selected_Y + 1 ] == 9 )
 				{
 					if( number_selected_X - 1 >= 0 && number_selected_Y - 1 >= 0 && array_numbers[ number_selected_X - 1, number_selected_Y - 1 ] == 9 )
-						FindScore( number_selected_X, number_selected_Y, number_selected_X + 1, number_selected_Y + 1, number_selected_X - 1, number_selected_Y - 1 );
+						FindedScore( number_selected_X, number_selected_Y, number_selected_X + 1, number_selected_Y + 1, number_selected_X - 1, number_selected_Y - 1 );
 				}
 			}
 		}
@@ -435,16 +484,17 @@ public class GameLogic : MonoBehaviour {
 		{
 			if( number_selected_X + 1 < size.x && number_selected_Y + 1 < size.y && array_numbers[ number_selected_X + 1, number_selected_Y + 1 ] == 1 )
 			{
-				if( number_selected_X + 2 < size.x && number_selected_Y + 2 < size.x )
+				if( number_selected_X + 2 < size.x && number_selected_Y + 2 < size.y )
 				{
 					if( array_numbers[ number_selected_X + 2, number_selected_Y + 2 ] == 9 )
-						FindScore( number_selected_X, number_selected_Y, number_selected_X + 1, number_selected_Y + 1, number_selected_X + 2, number_selected_Y + 2 );
+						FindedScore( number_selected_X, number_selected_Y, number_selected_X + 1, number_selected_Y + 1, number_selected_X + 2, number_selected_Y + 2 );
 				}
 			}
 		}
 	}
 	void LookDownLeft()
 	{
+		Debug.Log( "LookDownLeft" );
 		if( number_toPut == 6 )
 		{
 			if( number_selected_X + 1 < size.x && number_selected_Y - 1 >= 0 && array_numbers[ number_selected_X + 1, number_selected_Y - 1 ] == 1 )
@@ -452,7 +502,7 @@ public class GameLogic : MonoBehaviour {
 				if( number_selected_X + 2 < size.x && number_selected_Y - 2 >= 0 )
 				{
 					if( array_numbers[ number_selected_X + 2, number_selected_Y - 2 ] == 6 )
-						FindScore( number_selected_X, number_selected_Y, number_selected_X + 1, number_selected_Y - 1, number_selected_X + 2, number_selected_Y - 2 );
+						FindedScore( number_selected_X, number_selected_Y, number_selected_X + 1, number_selected_Y - 1, number_selected_X + 2, number_selected_Y - 2 );
 				}
 			}
 		}
@@ -463,12 +513,12 @@ public class GameLogic : MonoBehaviour {
 				if( array_numbers[ number_selected_X - 1, number_selected_Y + 1 ] == 6 )
 				{
 					if( number_selected_X + 1 < size.x && number_selected_Y - 1 >= 0 && array_numbers[ number_selected_X + 1, number_selected_Y - 1 ] == 6 )
-						FindScore( number_selected_X, number_selected_Y, number_selected_X + 1, number_selected_Y - 1, number_selected_X - 1, number_selected_Y + 1 );
+						FindedScore( number_selected_X, number_selected_Y, number_selected_X + 1, number_selected_Y - 1, number_selected_X - 1, number_selected_Y + 1 );
 				}
 				else if( array_numbers[ number_selected_X - 1, number_selected_Y + 1 ] == 9 )
 				{
 					if( number_selected_X + 1 < size.x && number_selected_Y - 1 >= 0 && array_numbers[ number_selected_X + 1, number_selected_Y - 1 ] == 9 )
-						FindScore( number_selected_X, number_selected_Y, number_selected_X + 1, number_selected_Y - 1, number_selected_X - 1, number_selected_Y + 1 );
+						FindedScore( number_selected_X, number_selected_Y, number_selected_X + 1, number_selected_Y - 1, number_selected_X - 1, number_selected_Y + 1 );
 				}
 			}
 		}
@@ -479,13 +529,14 @@ public class GameLogic : MonoBehaviour {
 				if( number_selected_X - 2 >= 0 && number_selected_Y + 2 < size.x )
 				{
 					if( array_numbers[ number_selected_X - 2, number_selected_Y + 2 ] == 9 )
-						FindScore( number_selected_X, number_selected_Y, number_selected_X - 1, number_selected_Y + 1, number_selected_X - 2, number_selected_Y + 2 );
+						FindedScore( number_selected_X, number_selected_Y, number_selected_X - 1, number_selected_Y + 1, number_selected_X - 2, number_selected_Y + 2 );
 				}
 			}
 		}
 	}
 	void LookUpRight()
 	{
+		Debug.Log( "LookUpRight" );
 		if(number_toPut == 6 )
 		{
 			if( number_selected_X - 1 >= 0 && number_selected_Y + 1 < size.y &&  array_numbers[number_selected_X - 1 , number_selected_Y + 1] == 1 )
@@ -493,9 +544,9 @@ public class GameLogic : MonoBehaviour {
 				if( number_selected_X - 2 >= 0 && number_selected_Y + 2 < size.y )
 				{
 					if( is_in_UpSideDown && array_numbers[ number_selected_X - 2, number_selected_Y + 2 ] == 6 )
-						FindScore( number_selected_X, number_selected_Y, number_selected_X - 1, number_selected_Y + 1, number_selected_X - 2, number_selected_Y + 2 );
+						FindedScore( number_selected_X, number_selected_Y, number_selected_X - 1, number_selected_Y + 1, number_selected_X - 2, number_selected_Y + 2 );
 					else if(!is_in_UpSideDown && array_numbers[ number_selected_X - 2, number_selected_Y + 2 ] == 9 )
-						FindScore( number_selected_X, number_selected_Y, number_selected_X - 1, number_selected_Y + 1, number_selected_X - 2, number_selected_Y + 2 );
+						FindedScore( number_selected_X, number_selected_Y, number_selected_X - 1, number_selected_Y + 1, number_selected_X - 2, number_selected_Y + 2 );
 				}
 			}
 		}
@@ -508,12 +559,12 @@ public class GameLogic : MonoBehaviour {
 					if(array_numbers[number_selected_X +  1 , number_selected_Y - 1 ] == 6 )
 					{
 						if( number_selected_X - 1 >= 0 && number_selected_Y + 1 < size.y && array_numbers[ number_selected_X - 1, number_selected_Y + 1 ] == 6 )
-							FindScore( number_selected_X, number_selected_Y, number_selected_X + 1, number_selected_Y - 1, number_selected_X - 1, number_selected_Y + 1 );
+							FindedScore( number_selected_X, number_selected_Y, number_selected_X + 1, number_selected_Y - 1, number_selected_X - 1, number_selected_Y + 1 );
 					}
 					else if( array_numbers[ number_selected_X + 1, number_selected_Y - 1 ] == 9 )
 					{
 						if( number_selected_X - 1 >= 0 && number_selected_Y + 1 < size.y && array_numbers[ number_selected_X - 1, number_selected_Y + 1 ] == 9 )
-							FindScore( number_selected_X, number_selected_Y, number_selected_X + 1, number_selected_Y - 1, number_selected_X - 1, number_selected_Y + 1 );
+							FindedScore( number_selected_X, number_selected_Y, number_selected_X + 1, number_selected_Y - 1, number_selected_X - 1, number_selected_Y + 1 );
 					}
 				}
 				else
@@ -521,7 +572,7 @@ public class GameLogic : MonoBehaviour {
 					if( array_numbers[ number_selected_X + 1, number_selected_Y - 1 ] == 6 )
 					{
 						if( number_selected_X - 1 >= 0 && number_selected_Y + 1 < size.y && array_numbers[ number_selected_X - 1, number_selected_Y + 1 ] == 9)
-							FindScore( number_selected_X, number_selected_Y, number_selected_X + 1, number_selected_Y - 1, number_selected_X - 1, number_selected_Y + 1 );
+							FindedScore( number_selected_X, number_selected_Y, number_selected_X + 1, number_selected_Y - 1, number_selected_X - 1, number_selected_Y + 1 );
 					}
 				}
 			}
@@ -533,15 +584,16 @@ public class GameLogic : MonoBehaviour {
 				if( number_selected_X + 2 < size.x && number_selected_Y - 2 >= 0 )
 				{
 					if( is_in_UpSideDown && array_numbers[ number_selected_X + 2, number_selected_Y - 2 ] == 9 )
-						FindScore( number_selected_X, number_selected_Y, number_selected_X - 1, number_selected_Y + 1, number_selected_X - 2, number_selected_Y + 2 );
+						FindedScore( number_selected_X, number_selected_Y, number_selected_X + 1, number_selected_Y - 1, number_selected_X + 2, number_selected_Y - 2 );
 					else if( !is_in_UpSideDown && array_numbers[ number_selected_X + 2, number_selected_Y - 2 ] == 6 )
-						FindScore( number_selected_X, number_selected_Y, number_selected_X + 1, number_selected_Y - 1, number_selected_X + 2, number_selected_Y - 2 );
+						FindedScore( number_selected_X, number_selected_Y, number_selected_X + 1, number_selected_Y - 1, number_selected_X + 2, number_selected_Y - 2 );
 				}
 			}
 		}
 	}
 	void LookDownRight()
 	{
+		Debug.Log( "LookDownRight" );
 		if( number_toPut == 6 )
 		{
 			if( number_selected_X + 1 < size.x && number_selected_Y + 1 < size.y && array_numbers[ number_selected_X + 1, number_selected_Y + 1 ] == 1 )
@@ -549,9 +601,9 @@ public class GameLogic : MonoBehaviour {
 				if( number_selected_X + 2 < size.x && number_selected_Y + 2 < size.y )
 				{
 					if( is_in_UpSideDown && array_numbers[ number_selected_X + 2, number_selected_Y + 2 ] == 6 )
-						FindScore( number_selected_X, number_selected_Y, number_selected_X + 1, number_selected_Y + 1, number_selected_X + 2, number_selected_Y + 2 );
+						FindedScore( number_selected_X, number_selected_Y, number_selected_X + 1, number_selected_Y + 1, number_selected_X + 2, number_selected_Y + 2 );
 					else if( !is_in_UpSideDown && array_numbers[ number_selected_X + 2, number_selected_Y + 2 ] == 9 )
-						FindScore( number_selected_X, number_selected_Y, number_selected_X + 1, number_selected_Y + 1, number_selected_X + 2, number_selected_Y + 2 );
+						FindedScore( number_selected_X, number_selected_Y, number_selected_X + 1, number_selected_Y + 1, number_selected_X + 2, number_selected_Y + 2 );
 				}
 			}
 		}
@@ -564,12 +616,12 @@ public class GameLogic : MonoBehaviour {
 					if( array_numbers[ number_selected_X - 1, number_selected_Y - 1 ] == 6 )
 					{
 						if( number_selected_X + 1 < size.x && number_selected_Y + 1 < size.y && array_numbers[ number_selected_X + 1, number_selected_Y + 1 ] == 6 )
-							FindScore( number_selected_X, number_selected_Y, number_selected_X - 1, number_selected_Y - 1, number_selected_X + 1, number_selected_Y + 1 );
+							FindedScore( number_selected_X, number_selected_Y, number_selected_X - 1, number_selected_Y - 1, number_selected_X + 1, number_selected_Y + 1 );
 					}
 					else if( array_numbers[ number_selected_X - 1, number_selected_Y - 1 ] == 9 )
 					{
 						if( number_selected_X + 1 < size.x && number_selected_Y + 1 < size.y && array_numbers[ number_selected_X + 1, number_selected_Y + 1 ] == 9 )
-							FindScore( number_selected_X, number_selected_Y, number_selected_X - 1, number_selected_Y - 1, number_selected_X + 1, number_selected_Y + 1 );
+							FindedScore( number_selected_X, number_selected_Y, number_selected_X - 1, number_selected_Y - 1, number_selected_X + 1, number_selected_Y + 1 );
 					}
 				}
 				else
@@ -577,7 +629,7 @@ public class GameLogic : MonoBehaviour {
 					if( array_numbers[ number_selected_X - 1, number_selected_Y - 1 ] == 6 )
 					{
 						if( number_selected_X + 1 < size.x && number_selected_Y + 1 < size.y && array_numbers[ number_selected_X + 1, number_selected_Y + 1 ] == 9 )
-							FindScore( number_selected_X, number_selected_Y, number_selected_X - 1, number_selected_Y - 1, number_selected_X + 1, number_selected_Y + 1 );
+							FindedScore( number_selected_X, number_selected_Y, number_selected_X - 1, number_selected_Y - 1, number_selected_X + 1, number_selected_Y + 1 );
 					}
 				}
 			}
@@ -589,15 +641,16 @@ public class GameLogic : MonoBehaviour {
 				if( number_selected_X - 2 >= 0 && number_selected_Y - 2 >= 0 )
 				{
 					if( is_in_UpSideDown && array_numbers[ number_selected_X - 2, number_selected_Y - 2 ] == 9 )
-						FindScore( number_selected_X, number_selected_Y, number_selected_X - 1, number_selected_Y - 1, number_selected_X - 2, number_selected_Y - 2 );
+						FindedScore( number_selected_X, number_selected_Y, number_selected_X - 1, number_selected_Y - 1, number_selected_X - 2, number_selected_Y - 2 );
 					else if( !is_in_UpSideDown && array_numbers[ number_selected_X - 2, number_selected_Y - 2 ] == 6 )
-						FindScore( number_selected_X, number_selected_Y, number_selected_X - 1, number_selected_Y - 1, number_selected_X - 2, number_selected_Y - 2 );
+						FindedScore( number_selected_X, number_selected_Y, number_selected_X - 1, number_selected_Y - 1, number_selected_X - 2, number_selected_Y - 2 );
 				}
 			}
 		}
 	}
 	void LookUp()
 	{
+		Debug.Log( "LookUp" );
 		if( number_toPut == 6 )
 		{
 			if( number_selected_X - 1 >= 0 && array_numbers[ number_selected_X - 1, number_selected_Y ] == 1 )
@@ -605,9 +658,9 @@ public class GameLogic : MonoBehaviour {
 				if( number_selected_X - 2 >= 0 )
 				{
 					if( is_in_UpSideDown && array_numbers[ number_selected_X - 2, number_selected_Y ] == 6 )
-						FindScore( number_selected_X, number_selected_Y, number_selected_X - 1, number_selected_Y, number_selected_X - 2, number_selected_Y );
+						FindedScore( number_selected_X, number_selected_Y, number_selected_X - 1, number_selected_Y, number_selected_X - 2, number_selected_Y );
 					else if( !is_in_UpSideDown && array_numbers[ number_selected_X - 2, number_selected_Y ] == 9 )
-						FindScore( number_selected_X, number_selected_Y, number_selected_X - 1, number_selected_Y, number_selected_X - 2, number_selected_Y );
+						FindedScore( number_selected_X, number_selected_Y, number_selected_X - 1, number_selected_Y, number_selected_X - 2, number_selected_Y );
 
 				}
 			}
@@ -622,12 +675,12 @@ public class GameLogic : MonoBehaviour {
 					if( array_numbers[ number_selected_X + 1, number_selected_Y ] == 9 )
 					{
 						if( number_selected_X - 1 >= 0 && array_numbers[ number_selected_X - 1, number_selected_Y ] == 9 )
-							FindScore( number_selected_X, number_selected_Y, number_selected_X + 1, number_selected_Y, number_selected_X - 1, number_selected_Y );
+							FindedScore( number_selected_X, number_selected_Y, number_selected_X + 1, number_selected_Y, number_selected_X - 1, number_selected_Y );
 					}
 					else if( array_numbers[ number_selected_X + 1, number_selected_Y ] == 6 )
 					{
 						if( number_selected_X - 1 >= 0 && array_numbers[ number_selected_X - 1, number_selected_Y ] == 6 )
-							FindScore( number_selected_X, number_selected_Y, number_selected_X + 1, number_selected_Y, number_selected_X - 1, number_selected_Y );
+							FindedScore( number_selected_X, number_selected_Y, number_selected_X + 1, number_selected_Y, number_selected_X - 1, number_selected_Y );
 					}
 				}
 				else
@@ -635,7 +688,7 @@ public class GameLogic : MonoBehaviour {
 					if( array_numbers[ number_selected_X + 1, number_selected_Y ] == 6 )
 					{
 						if( number_selected_X - 1 >= 0 && array_numbers[ number_selected_X - 1, number_selected_Y ] == 9 )
-							FindScore( number_selected_X, number_selected_Y, number_selected_X + 1, number_selected_Y, number_selected_X - 1, number_selected_Y );
+							FindedScore( number_selected_X, number_selected_Y, number_selected_X + 1, number_selected_Y, number_selected_X - 1, number_selected_Y );
 					}
 				}
 
@@ -649,18 +702,18 @@ public class GameLogic : MonoBehaviour {
 				{
 					if( is_in_UpSideDown && array_numbers[ number_selected_X + 2, number_selected_Y ] == 9 )
 					{
-						FindScore( number_selected_X, number_selected_Y, number_selected_X + 1, number_selected_Y, number_selected_X + 2, number_selected_Y );
+						FindedScore( number_selected_X, number_selected_Y, number_selected_X + 1, number_selected_Y, number_selected_X + 2, number_selected_Y );
 					}
 					else if( !is_in_UpSideDown && array_numbers[ number_selected_X + 2, number_selected_Y ] == 6 )
 					{
-						FindScore( number_selected_X, number_selected_Y, number_selected_X + 1, number_selected_Y, number_selected_X + 2, number_selected_Y );
+						FindedScore( number_selected_X, number_selected_Y, number_selected_X + 1, number_selected_Y, number_selected_X + 2, number_selected_Y );
 					}
 				}
 			}
 		}
 	}
 	
-	void FindScore(int x_cell1 , int y_cell1 , int x_cell2 , int y_cell2 , int x_cell3 , int y_cell3)
+	void FindedScore(int x_cell1 , int y_cell1 , int x_cell2 , int y_cell2 , int x_cell3 , int y_cell3)
 	{
 		counter_combo++;
 		ScoredLine( x_cell1, y_cell1, x_cell2, y_cell2, x_cell3, y_cell3 );
@@ -691,14 +744,14 @@ public class GameLogic : MonoBehaviour {
 		return currentPlayer;
 	}
 
-	public string GetWinner()
+	public int GetWinner()
 	{
 		if( score_player1 == score_player2 )
-			return "NONE";
+			return 0;
 		else if( score_player1 > score_player2 )
-			return PlayerPrefs.GetString( PlayerPrefs.GetString( "Player1 Name" ) );
+			return 1;
 		else
-			return PlayerPrefs.GetString( PlayerPrefs.GetString( "Player2 Name" ) );
+			return 2;
 	}
 	#endregion
 
