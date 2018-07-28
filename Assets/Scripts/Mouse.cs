@@ -251,7 +251,7 @@ public class Mouse : MonoBehaviour {
 
 	public int DecreaseNumber(int player)
 	{
-		int number = 3;
+		int number;
 
 		if(player == 1 )
 		{
@@ -261,7 +261,7 @@ public class Mouse : MonoBehaviour {
 				player1_counter_number_6--;
 			else if( number == 1 )
 				player1_counter_number_1--;
-			else
+			else if( number == 9)
 				player1_counter_number_9--;
 		}
 		else
@@ -272,7 +272,7 @@ public class Mouse : MonoBehaviour {
 				player2_counter_number_6--;
 			else if( number == 1 )
 				player2_counter_number_1--;
-			else
+			else if( number == 9 )
 				player2_counter_number_9--;
 		}
 

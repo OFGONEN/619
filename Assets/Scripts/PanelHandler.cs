@@ -63,11 +63,10 @@ public class PanelHandler : MonoBehaviour {
 	public void WinnerName()
 	{
 		int player = GameLogic.instance.GetWinner();
-		Debug.Log( player );
 
-		if( player == 0 )
+		if( player == 1 )
 			text_winner_name.text = PlayerPrefs.GetString( "Player1 Name" );
-		else if( player == 1 )
+		else if( player == 2 )
 			text_winner_name.text = PlayerPrefs.GetString( "Player2 Name" );
 		else
 			text_winner_name.text = "NONE";

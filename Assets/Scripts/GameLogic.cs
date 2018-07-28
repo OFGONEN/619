@@ -58,46 +58,58 @@ public class GameLogic : MonoBehaviour {
 
 	public void EndTurn()
 	{
-		if(can_EndTurn )
+		if(can_EndTurn  )
 		{
 			Counter.instance.TooglePause(0);
 			Mouse.instance.Neutralize();
 			if( !did_putted_number )
 			{
-				if( currentPlayer == 1 )
+				if( currentPlayer == 1  )
 					PutRandomNumber( Mouse.instance.DecreaseNumber( 1 ) );
 				else
 					PutRandomNumber( Mouse.instance.DecreaseNumber( 2 ) );
-
+				if( counter_empty_cells == 0 )
+				{
+					EndGame();
+					return;
+				}
 			}
 
-			if( is_in_UpSideDown )
+			if(Mouse.instance.HasNumbertoPut( currentPlayer == 1 ? 2 : 1 ) )
 			{
-				BoardHandler.instance.EndUpsideDown( currentPlayer );
-				ChangeNumbers();
+				if( is_in_UpSideDown )
+				{
+					BoardHandler.instance.EndUpsideDown( currentPlayer );
+					ChangeNumbers();
+				}
+				else
+				{
+					UIAnimationHandler.instance.EndTurn( currentPlayer );
+				}
+				currentPlayer = 3 - currentPlayer;
+				score_toPut = 0;
+				number_toPut = 0;
+				is_finded_Score = false;
+				can_GoUpSideDown = false;
+				is_in_UpSideDown = false;
+				can_EndTurn = false;
+				did_putted_number = false;
+				counter_combo = 0;
+				Mouse.instance.canHit = true;
 			}
-			else
-			{
-				UIAnimationHandler.instance.EndTurn( currentPlayer );
-			}
-			currentPlayer = 3 - currentPlayer;
-			score_toPut = 0;
-			number_toPut = 0;
-			is_finded_Score = false;
-			can_GoUpSideDown = false;
-			is_in_UpSideDown = false;
-			can_EndTurn = false;
-			did_putted_number = false;
-			counter_combo = 0;
-			Mouse.instance.canHit = true;
 		}
 	}
 
 	void PutRandomNumber(int number)
 	{
-		Vector2 cord_cell = list_empty_cells[ Random.Range( 0, list_empty_cells.Count ) ];
-		array_numbers[ (int)cord_cell.x, ( int )cord_cell.y ] = number;
-		BoardHandler.instance.ChangeNumberSprite( array_cells[ ( int )cord_cell.x, ( int )cord_cell.y ], number, false );
+		if(number != 0)
+		{
+			Vector2 cord_cell = list_empty_cells[ Random.Range( 0, list_empty_cells.Count ) ];
+			array_numbers[ ( int )cord_cell.x, ( int )cord_cell.y ] = number;
+			list_empty_cells.Remove( new Vector2( ( int )cord_cell.x, ( int )cord_cell.y ) );
+			counter_empty_cells--;
+			BoardHandler.instance.ChangeNumberSprite( array_cells[ ( int )cord_cell.x, ( int )cord_cell.y ], number, false );
+		}
 	}
 	public void GoUpsideDown()
 	{
