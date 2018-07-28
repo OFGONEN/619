@@ -21,6 +21,7 @@ public class OptionsHandler : MonoBehaviour {
 	public ImageChanger soundOff;
 	public ImageChanger musicOn;
 	public ImageChanger musicOff;
+	public ImageChanger sizeMin;
 	public ImageChanger sizeSmall;
 	public ImageChanger sizeMedium;
 	public ImageChanger sizeBig;
@@ -131,9 +132,13 @@ public class OptionsHandler : MonoBehaviour {
 	{
 		if( tableSize == 0 )
 		{
-			sizeSmall.ChangeToNegative();
+			sizeMin.ChangeToNegative();
 		}
 		else if( tableSize == 1 )
+		{
+			sizeSmall.ChangeToNegative();
+		}
+		else if( tableSize == 2 )
 		{
 			sizeMedium.ChangeToNegative();
 		}
@@ -211,28 +216,40 @@ public class OptionsHandler : MonoBehaviour {
 		PlayerPrefs.SetInt( "Music", 0 );
 	}
 
-	public void ChangeSizeSmall()
+	public void ChangeSizeMin()
 	{
-		sizeSmall.ChangeToNegative();
+		sizeMin.ChangeToNegative();
+		sizeSmall.ChangeToNormal();
 		sizeMedium.ChangeToNormal();
 		sizeBig.ChangeToNormal();
 		PlayerPrefs.SetInt( "Table Size", 0 );
 	}
 
-	public void ChangeSizeMedium()
+	public void ChangeSizeSmall()
 	{
-		sizeSmall.ChangeToNormal();
-		sizeMedium.ChangeToNegative();
+		sizeMin.ChangeToNormal();
+		sizeSmall.ChangeToNegative();
+		sizeMedium.ChangeToNormal();
 		sizeBig.ChangeToNormal();
 		PlayerPrefs.SetInt( "Table Size", 1 );
 	}
 
+	public void ChangeSizeMedium()
+	{
+		sizeMin.ChangeToNormal();
+		sizeSmall.ChangeToNormal();
+		sizeMedium.ChangeToNegative();
+		sizeBig.ChangeToNormal();
+		PlayerPrefs.SetInt( "Table Size", 2 );
+	}
+
 	public void ChangeSizeBig()
 	{
+		sizeMin.ChangeToNormal();
 		sizeSmall.ChangeToNormal();
 		sizeMedium.ChangeToNormal();
 		sizeBig.ChangeToNegative();
-		PlayerPrefs.SetInt( "Table Size", 2 );
+		PlayerPrefs.SetInt( "Table Size", 3 );
 	}
 	#endregion 
 

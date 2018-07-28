@@ -18,7 +18,7 @@ public class Mouse : MonoBehaviour {
 	private float cell_big_scale;
 
 	int x , y;
-	int size_x , size_y , size_table;
+	int size_x , size_y , size_table , size;
 
 	int player1_counter_number_1 , player1_counter_number_6 , player1_counter_number_9;
 	int player2_counter_number_1 , player2_counter_number_6 , player2_counter_number_9;
@@ -41,6 +41,7 @@ public class Mouse : MonoBehaviour {
 		x = (int)BoardMaker.instance.GetTableSize().x;
 		y = ( int )BoardMaker.instance.GetTableSize().y;
 
+		size = PlayerPrefs.GetInt( "Table Size" );
 		size_table = PlayerPrefs.GetInt( "Table Size" ) + 1;
 		size_x = ( int )BoardMaker.instance.GetTableSize().x - 1;
 		size_y = ( int )BoardMaker.instance.GetTableSize().y - 1;
@@ -289,10 +290,36 @@ public class Mouse : MonoBehaviour {
 
 	void AddBump(int x , int y)
 	{
-		if(GameLogic.instance.GetCurrentPlayer() == 1)
-			options.transform.position += new Vector3( x * 0.1f, y * 0.1f, 0 );
+		if(size == 0 )
+		{
+			if( GameLogic.instance.GetCurrentPlayer() == 1 )
+				options.transform.position += new Vector3( x * 0.5f, y * 0.5f, 0 );
+			else
+				options.transform.position -= new Vector3( x * 0.5f, y * 0.5f, 0 );
+		}
+		else if(size == 1)
+		{
+			if( GameLogic.instance.GetCurrentPlayer() == 1 )
+				options.transform.position += new Vector3( x * 0.25f, y * 0.25f, 0 );
+			else
+				options.transform.position -= new Vector3( x * 0.25f, y * 0.25f, 0 );
+		}
+		else if(size == 2 )
+		{
+			if( GameLogic.instance.GetCurrentPlayer() == 1 )
+				options.transform.position += new Vector3( x * 0.15f, y * 0.15f, 0 );
+			else
+				options.transform.position -= new Vector3( x * 0.15f, y * 0.15f, 0 );
+		}
 		else
-			options.transform.position -= new Vector3( x * 0.1f, y * 0.1f, 0 );
+		{
+			if( GameLogic.instance.GetCurrentPlayer() == 1 )
+				options.transform.position += new Vector3( -x * 0.1f, -y * 0.1f, 0 );
+			else
+				options.transform.position -= new Vector3( -x * 0.1f, -y * 0.1f, 0 );
+		}
+		
+		
 
 	}
 
