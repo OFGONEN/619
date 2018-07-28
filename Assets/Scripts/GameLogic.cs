@@ -199,9 +199,9 @@ public class GameLogic : MonoBehaviour {
 	void DeclareScore()
 	{
 		if( is_in_UpSideDown )
-			score_toPut = score_upsidedown * counter_combo + counter_combo - 1;
+			score_toPut = score_upsidedown  + counter_combo - 1;
 		else
-			score_toPut = score_normal * counter_combo + counter_combo - 1;
+			score_toPut = score_normal  + counter_combo - 1;
 
 		if(currentPlayer == 1 )
 		{
