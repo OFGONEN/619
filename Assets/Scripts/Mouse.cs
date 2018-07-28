@@ -281,33 +281,33 @@ public class Mouse : MonoBehaviour {
 
 	void UpRight()
 	{
-		options.transform.GetChild( 0 ).localPosition = new Vector2( 0, 1 );
-		options.transform.GetChild( 1 ).localPosition = new Vector2( 1, 1 );
-		options.transform.GetChild( 2 ).localPosition = new Vector2( 1, 0 );
+		options.transform.GetChild( 0 ).localPosition = new Vector3( 0, 1, -1 );
+		options.transform.GetChild( 1 ).localPosition = new Vector3( 1, 1, -1 );
+		options.transform.GetChild( 2 ).localPosition = new Vector3( 1, 0, -1 );
 		AddBump( 1, 1 );
 	}
 
 	void UpLeft()
 	{
-		options.transform.GetChild( 0 ).localPosition = new Vector2( -1, 0 );
-		options.transform.GetChild( 1 ).localPosition = new Vector2( -1, 1 );
-		options.transform.GetChild( 2 ).localPosition = new Vector2( 0, 1 );
+		options.transform.GetChild( 0 ).localPosition = new Vector3( -1, 0, -1 );
+		options.transform.GetChild( 1 ).localPosition = new Vector3( -1, 1, -1 );
+		options.transform.GetChild( 2 ).localPosition = new Vector3( 0, 1, -1 );
 		AddBump( -1, 1 );
 	}
 
 	void DownRight()
 	{
-		options.transform.GetChild( 0 ).localPosition = new Vector2( 0, -1 );
-		options.transform.GetChild( 1 ).localPosition = new Vector2( 1, -1 );
-		options.transform.GetChild( 2 ).localPosition = new Vector2( 1, 0 );
+		options.transform.GetChild( 0 ).localPosition = new Vector3( 0, -1, -1 );
+		options.transform.GetChild( 1 ).localPosition = new Vector3( 1, -1, -1 );
+		options.transform.GetChild( 2 ).localPosition = new Vector3( 1,  0, -1 );
 		AddBump( 1, -1 );
 	}
 
 	void DownLeft()
 	{
-		options.transform.GetChild( 0 ).localPosition = new Vector2( -1, 0 );
-		options.transform.GetChild( 1 ).localPosition = new Vector2( -1, -1 );
-		options.transform.GetChild( 2 ).localPosition = new Vector2( 0, -1 );
+		options.transform.GetChild( 0 ).localPosition = new Vector3( -1,  0, -1 );
+		options.transform.GetChild( 1 ).localPosition = new Vector3( -1, -1, -1 );
+		options.transform.GetChild( 2 ).localPosition = new Vector3(  0, -1, -1 );
 		AddBump( -1, -1 );
 	}
 
