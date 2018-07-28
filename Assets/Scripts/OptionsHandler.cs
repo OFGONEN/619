@@ -170,7 +170,6 @@ public class OptionsHandler : MonoBehaviour {
 	}
 	#endregion
 
-	// Suan sadece GUI degistirme var , logic eklemek gerek , SoundManager'dan sonra ekleriz 
 	#region ButtonActions 
 	public void OpenKeyboardPlayer1()
 	{

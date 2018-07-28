@@ -62,7 +62,16 @@ public class PanelHandler : MonoBehaviour {
 
 	public void WinnerName()
 	{
-		text_winner_name.text = GameLogic.instance.GetWinner();
+		int player = GameLogic.instance.GetWinner();
+		Debug.Log( player );
+
+		if( player == 0 )
+			text_winner_name.text = PlayerPrefs.GetString( "Player1 Name" );
+		else if( player == 1 )
+			text_winner_name.text = PlayerPrefs.GetString( "Player2 Name" );
+		else
+			text_winner_name.text = "NONE";
+
 	}
 
 	public void ToogleBackButton(bool open)

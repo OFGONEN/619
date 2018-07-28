@@ -709,14 +709,14 @@ public class GameLogic : MonoBehaviour {
 		return currentPlayer;
 	}
 
-	public string GetWinner()
+	public int GetWinner()
 	{
 		if( score_player1 == score_player2 )
-			return "NONE";
+			return 0;
 		else if( score_player1 > score_player2 )
-			return PlayerPrefs.GetString( PlayerPrefs.GetString( "Player1 Name" ) );
+			return 1;
 		else
-			return PlayerPrefs.GetString( PlayerPrefs.GetString( "Player2 Name" ) );
+			return 2;
 	}
 	#endregion
 
