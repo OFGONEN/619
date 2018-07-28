@@ -1,6 +1,7 @@
 ﻿/*
 Created By OFGONEN
 */
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Mouse : MonoBehaviour {
@@ -23,6 +24,10 @@ public class Mouse : MonoBehaviour {
 	int player1_counter_number_1 , player1_counter_number_6 , player1_counter_number_9;
 	int player2_counter_number_1 , player2_counter_number_6 , player2_counter_number_9;
 
+	List<int> active_numbers_player1;
+	List<int> active_numbers_player2;
+
+
 
 	#endregion
 
@@ -36,6 +41,16 @@ public class Mouse : MonoBehaviour {
 
 	private void Start()
 	{
+		active_numbers_player1 = new List<int>();
+		active_numbers_player1.Add( 6 );
+		active_numbers_player1.Add( 1 );
+		active_numbers_player1.Add( 9 );
+
+		active_numbers_player2 = new List<int>();
+		active_numbers_player2.Add( 6 );
+		active_numbers_player2.Add( 1 );
+		active_numbers_player2.Add( 9 );
+
 		cell_normal_scale =  BoardMaker.instance.GetCellScale();
 		cell_big_scale = cell_normal_scale * 1.2f;
 		x = (int)BoardMaker.instance.GetTableSize().x;
@@ -234,10 +249,14 @@ public class Mouse : MonoBehaviour {
 		return false;
 	}
 
-	public void DecreaseNumber(int player , int number)
+	public int DecreaseNumber(int player)
 	{
+		int number = 3;
+
 		if(player == 1 )
 		{
+			number = active_numbers_player1[ Random.Range( 0, active_numbers_player1.Count ) ];
+
 			if( number == 6 )
 				player1_counter_number_6--;
 			else if( number == 1 )
@@ -247,6 +266,8 @@ public class Mouse : MonoBehaviour {
 		}
 		else
 		{
+			number = active_numbers_player2[ Random.Range( 0, active_numbers_player2.Count ) ];
+
 			if( number == 6 )
 				player2_counter_number_6--;
 			else if( number == 1 )
@@ -254,6 +275,8 @@ public class Mouse : MonoBehaviour {
 			else
 				player2_counter_number_9--;
 		}
+
+		return number;
 	}
 
 	void UpRight()
@@ -359,6 +382,8 @@ public class Mouse : MonoBehaviour {
 				{
 					OptionButtonTextChanger.instance.ChangeNumber( numbertoput, player1_counter_number_6 );
 					player1_counter_number_6--;
+					if( player1_counter_number_6 == 0 )
+						active_numbers_player1.Remove( 6 );
 					return true;
 				}
 			}
@@ -368,6 +393,8 @@ public class Mouse : MonoBehaviour {
 				{
 					OptionButtonTextChanger.instance.ChangeNumber( numbertoput, player1_counter_number_9 );
 					player1_counter_number_9--;
+					if( player1_counter_number_9 == 0 )
+						active_numbers_player1.Remove( 9 );
 					return true;
 				}
 			}
@@ -377,6 +404,8 @@ public class Mouse : MonoBehaviour {
 				{
 					OptionButtonTextChanger.instance.ChangeNumber( numbertoput, player1_counter_number_1 );
 					player1_counter_number_1--;
+					if( player1_counter_number_1 == 0 )
+						active_numbers_player1.Remove( 1 );
 					return true;
 				}
 			}
@@ -389,6 +418,8 @@ public class Mouse : MonoBehaviour {
 				{
 					OptionButtonTextChanger.instance.ChangeNumber( numbertoput, player2_counter_number_6 );
 					player2_counter_number_6--;
+					if( player2_counter_number_6 == 0 )
+						active_numbers_player2.Remove( 6 );
 					return true;
 				}
 			}
@@ -398,6 +429,8 @@ public class Mouse : MonoBehaviour {
 				{
 					OptionButtonTextChanger.instance.ChangeNumber( numbertoput, player2_counter_number_9 );
 					player2_counter_number_9--;
+					if( player2_counter_number_9 == 0 )
+						active_numbers_player2.Remove( 9 );
 					return true;
 				}
 			}
@@ -407,6 +440,8 @@ public class Mouse : MonoBehaviour {
 				{
 					OptionButtonTextChanger.instance.ChangeNumber( numbertoput, player2_counter_number_1 );
 					player2_counter_number_1--;
+					if( player2_counter_number_1 == 0 )
+						active_numbers_player2.Remove( 1 );
 					return true;
 				}
 			}

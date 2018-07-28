@@ -1,6 +1,7 @@
 ﻿/*
 Created By OFGONEN
 */
+using System.Collections.Generic;
 using UnityEngine;
 
 public class GameLogic : MonoBehaviour {
@@ -14,7 +15,7 @@ public class GameLogic : MonoBehaviour {
 	private Vector2 size;
 	private GameObject[,] array_cells;
 	private int[,] array_numbers;
-
+	private List<Vector2> list_empty_cells;
 
 	private int score_player1;
 	private int score_player2;
@@ -30,6 +31,7 @@ public class GameLogic : MonoBehaviour {
 	private bool is_in_UpSideDown;
 	private bool can_GoUpSideDown;
 	private bool can_EndTurn;
+	private bool did_putted_number;
 
 	private int number_selected_X;
 	private int number_selected_Y;
@@ -49,6 +51,7 @@ public class GameLogic : MonoBehaviour {
 		array_numbers = new int[ ( int )size.x, ( int )size.y ];
 		counter_empty_cells = ( int )( size.x * size.y );
 		currentPlayer = 1;
+		list_empty_cells = new List<Vector2>();
 	}
 
 	#region Methods
@@ -59,6 +62,15 @@ public class GameLogic : MonoBehaviour {
 		{
 			Counter.instance.TooglePause(0);
 			Mouse.instance.Neutralize();
+			if( !did_putted_number )
+			{
+				if( currentPlayer == 1 )
+					PutRandomNumber( Mouse.instance.DecreaseNumber( 1 ) );
+				else
+					PutRandomNumber( Mouse.instance.DecreaseNumber( 2 ) );
+
+			}
+
 			if( is_in_UpSideDown )
 			{
 				BoardHandler.instance.EndUpsideDown( currentPlayer );
@@ -75,11 +87,18 @@ public class GameLogic : MonoBehaviour {
 			can_GoUpSideDown = false;
 			is_in_UpSideDown = false;
 			can_EndTurn = false;
+			did_putted_number = false;
 			counter_combo = 0;
 			Mouse.instance.canHit = true;
 		}
 	}
 
+	void PutRandomNumber(int number)
+	{
+		Vector2 cord_cell = list_empty_cells[ Random.Range( 0, list_empty_cells.Count ) ];
+		array_numbers[ (int)cord_cell.x, ( int )cord_cell.y ] = number;
+		BoardHandler.instance.ChangeNumberSprite( array_cells[ ( int )cord_cell.x, ( int )cord_cell.y ], number, false );
+	}
 	public void GoUpsideDown()
 	{
 		if( can_GoUpSideDown )
@@ -100,15 +119,19 @@ public class GameLogic : MonoBehaviour {
 		PanelHandler.instance.EndGamePanel( true );
 	}
 
+
 	public void UpdateArrayCell(GameObject cell , int x, int y)
 	{
 		array_cells[ x, y ] = cell;
+		list_empty_cells.Add( new Vector2( x, y ) );
 	}
 
 	public void UpdateArrayNumber(int numberToPut,int x , int y)
 	{
 		number_selected_X = x;
 		number_selected_Y = y;
+		list_empty_cells.Remove( new Vector2(x , y) );
+		did_putted_number = true;
 		number_toPut = numberToPut;
 
 		array_numbers[ x, y ] = numberToPut;
