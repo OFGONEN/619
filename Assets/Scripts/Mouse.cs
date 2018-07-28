@@ -217,7 +217,43 @@ public class Mouse : MonoBehaviour {
 		}
 	}
 
+	public bool HasNumbertoPut(int player)
+	{
+		if( player == 1 )
+		{
+			if( player1_counter_number_1 != 0 || player1_counter_number_6 != 0 || player1_counter_number_9 != 0 )
+				return true;
+		}
+		else
+		{
+			if( player2_counter_number_1 != 0 || player2_counter_number_6 != 0 || player2_counter_number_9 != 0 )
+				return true;
+		}
 
+		return false;
+	}
+
+	public void DecreaseNumber(int player , int number)
+	{
+		if(player == 1 )
+		{
+			if( number == 6 )
+				player1_counter_number_6--;
+			else if( number == 1 )
+				player1_counter_number_1--;
+			else
+				player1_counter_number_9--;
+		}
+		else
+		{
+			if( number == 6 )
+				player2_counter_number_6--;
+			else if( number == 1 )
+				player2_counter_number_1--;
+			else
+				player2_counter_number_9--;
+		}
+	}
 
 	void UpRight()
 	{

@@ -138,9 +138,17 @@ public class GameLogic : MonoBehaviour {
 		}
 		else
 		{
-			can_GoUpSideDown = false;
-			can_EndTurn = true;
-			UIHandler.instance.ChangeToOption( true );
+			if(!Mouse.instance.HasNumbertoPut(currentPlayer == 1 ? 2 : 1))
+			{
+				Mouse.instance.canHit = true;
+				return;
+			}
+			else
+			{
+				can_GoUpSideDown = false;
+				can_EndTurn = true;
+				UIHandler.instance.ChangeToOption( true );
+			}
 		}
 	}
 
