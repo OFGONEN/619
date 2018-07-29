@@ -167,8 +167,18 @@ public class GameLogic : MonoBehaviour {
 			Mouse.instance.canHit = true;
 			if(counter_combo >= 2 )
 			{
-				can_GoUpSideDown = true;
-				UIHandler.instance.ChangeToOption(false);
+				if( !is_in_UpSideDown )
+				{
+					can_GoUpSideDown = true;
+					UIHandler.instance.ChangeToOption( false );
+					can_EndTurn = false;
+				}
+
+			}
+			else
+			{
+				can_EndTurn = true;
+				UIHandler.instance.ChangeToOption( true );
 			}
 		}
 		else
