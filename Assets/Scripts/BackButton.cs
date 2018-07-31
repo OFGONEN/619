@@ -55,7 +55,7 @@ public class BackButton : MonoBehaviour {
 	static void Pause()
 	{
 		Counter.instance.TooglePause( 0 );
-		PanelHandler.instance.PausePanel( true );
+		PanelHandler.instance.MenuPanel( true );
 	}
 
 	static void QuitApplication()

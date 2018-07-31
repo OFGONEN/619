@@ -15,7 +15,7 @@ public class GameLogic : MonoBehaviour {
 	private Vector2 size;
 	private GameObject[,] array_cells;
 	private int[,] array_numbers;
-	private List<Vector2> list_empty_cells;
+	private List<Vector2> list_cells_empty;
 
 	private int score_player1;
 	private int score_player2;
@@ -51,7 +51,7 @@ public class GameLogic : MonoBehaviour {
 		array_numbers = new int[ ( int )size.x, ( int )size.y ];
 		counter_empty_cells = ( int )( size.x * size.y );
 		currentPlayer = 1;
-		list_empty_cells = new List<Vector2>();
+		list_cells_empty = new List<Vector2>();
 	}
 
 	#region Methods
@@ -98,15 +98,16 @@ public class GameLogic : MonoBehaviour {
 				Mouse.instance.canHit = true;
 			}
 		}
+		
 	}
 
 	void PutRandomNumber(int number)
 	{
 		if(number != 0)
 		{
-			Vector2 cord_cell = list_empty_cells[ Random.Range( 0, list_empty_cells.Count ) ];
+			Vector2 cord_cell = list_cells_empty[ Random.Range( 0, list_cells_empty.Count ) ];
 			array_numbers[ ( int )cord_cell.x, ( int )cord_cell.y ] = number;
-			list_empty_cells.Remove( new Vector2( ( int )cord_cell.x, ( int )cord_cell.y ) );
+			list_cells_empty.Remove( new Vector2( ( int )cord_cell.x, ( int )cord_cell.y ) );
 			counter_empty_cells--;
 			BoardHandler.instance.ChangeNumberSprite( array_cells[ ( int )cord_cell.x, ( int )cord_cell.y ], number, false );
 		}
@@ -135,14 +136,14 @@ public class GameLogic : MonoBehaviour {
 	public void UpdateArrayCell(GameObject cell , int x, int y)
 	{
 		array_cells[ x, y ] = cell;
-		list_empty_cells.Add( new Vector2( x, y ) );
+		list_cells_empty.Add( new Vector2( x, y ) );
 	}
 
 	public void UpdateArrayNumber(int numberToPut,int x , int y)
 	{
 		number_selected_X = x;
 		number_selected_Y = y;
-		list_empty_cells.Remove( new Vector2(x , y) );
+		list_cells_empty.Remove( new Vector2(x , y) );
 		did_putted_number = true;
 		number_toPut = numberToPut;
 
@@ -172,6 +173,7 @@ public class GameLogic : MonoBehaviour {
 					can_GoUpSideDown = true;
 					UIHandler.instance.ChangeToOption( false );
 					can_EndTurn = false;
+					SoundEffectPlayer.instance.EarnUpsideDownSound();
 				}
 
 			}
@@ -180,12 +182,19 @@ public class GameLogic : MonoBehaviour {
 				can_EndTurn = true;
 				UIHandler.instance.ChangeToOption( true );
 			}
+			SoundEffectPlayer.instance.ScoredSound();
 		}
 		else
 		{
 			if(!Mouse.instance.HasNumbertoPut(currentPlayer == 1 ? 2 : 1))
 			{
 				Mouse.instance.canHit = true;
+				if(!is_in_UpSideDown && can_GoUpSideDown)
+				{
+					can_GoUpSideDown = false;
+					UIHandler.instance.ChangeToOption( true );
+					UIHandler.instance.button_option.gameObject.SetActive( false );
+				}
 				return;
 			}
 			else
@@ -194,6 +203,7 @@ public class GameLogic : MonoBehaviour {
 				can_EndTurn = true;
 				UIHandler.instance.ChangeToOption( true );
 			}
+			SoundEffectPlayer.instance.LooseUpsideDownSound();
 		}
 	}
 

@@ -95,6 +95,7 @@ public class Mouse : MonoBehaviour {
 								BoardHandler.instance.ChangeNumberSprite( obj_selected, number_put, false );
 								ResetMouse();
 								GameLogic.instance.UpdateArrayNumber( number_put, x, y );
+								SoundEffectPlayer.instance.OptionCellTouchSound();
 							}
 							else
 							{
@@ -103,6 +104,7 @@ public class Mouse : MonoBehaviour {
 									BoardHandler.instance.ChangeNumberSprite( obj_selected, 15 - number_put, false );
 									ResetMouse();
 									GameLogic.instance.UpdateArrayNumber( number_put, x, y );
+									SoundEffectPlayer.instance.OptionCellTouchSound();
 								}
 							}
 
@@ -114,6 +116,7 @@ public class Mouse : MonoBehaviour {
 								BoardHandler.instance.ChangeNumberSprite( obj_selected, number_put, false );
 								ResetMouse();
 								GameLogic.instance.UpdateArrayNumber( number_put, x, y );
+								SoundEffectPlayer.instance.OptionCellTouchSound();
 							}
 
 						}
@@ -166,6 +169,7 @@ public class Mouse : MonoBehaviour {
 							obj_selected.transform.localScale = new Vector2( cell_big_scale, cell_big_scale);
 							BoardHandler.instance.ChangeCellSprite( obj_selected, 1 );
 							OpenOptions();
+							SoundEffectPlayer.instance.CellTouchSound();
 						}
 
 					}

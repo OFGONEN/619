@@ -206,6 +206,7 @@ public class OptionsHandler : MonoBehaviour {
 		musicOn.ChangeToNegative();
 		musicOff.ChangeToNormal();
 		PlayerPrefs.SetInt( "Music", 1 );
+		SoundManager.instance.StartMusic();
 	}
 
 	public void ChangeMusicOff()
@@ -213,6 +214,7 @@ public class OptionsHandler : MonoBehaviour {
 		musicOn.ChangeToNormal();
 		musicOff.ChangeToNegative();
 		PlayerPrefs.SetInt( "Music", 0 );
+		SoundManager.instance.StopMusic();
 	}
 
 	public void ChangeSizeMin()
