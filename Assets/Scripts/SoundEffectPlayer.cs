@@ -7,6 +7,8 @@ public class SoundEffectPlayer : MonoBehaviour {
 
 	#region Variables
 	public static SoundEffectPlayer instance = null;
+	public bool earnedUpsideDown;
+	public bool lostUpsideDown;
 	#endregion
 
 	private void Awake()
@@ -25,45 +27,45 @@ public class SoundEffectPlayer : MonoBehaviour {
 
 	public void NegativeButtonSound()
 	{
-		//SoundManager.instance.PlayEffect( 1 );
+		SoundManager.instance.PlayEffect( 1 );
 	}
 
 	public void CellTouchSound()
 	{
-		//SoundManager.instance.PlayEffect( 2 );
+		SoundManager.instance.PlayEffect( 2 );
 	}
 
 	public void OptionCellTouchSound()
 	{
-		//SoundManager.instance.PlayEffect( 3 );
+		SoundManager.instance.PlayEffect( 3 );
 	}
 
 	public void ScoredSound()
 	{
-		//SoundManager.instance.PlayEffect( 4 );
+		SoundManager.instance.PlayEffect( 4 );
 	}
 
 	public void EarnUpsideDownSound()
 	{
-		//SoundManager.instance.PlayEffect( 5 );
-	}
-
-	public void LooseUpsideDownSound()
-	{
-		//SoundManager.instance.PlayEffect( 6 );
-	}
-
-	public void GoEndTurnOrUpsideDownSound()
-	{
-		//SoundManager.instance.PlayEffect( 7 );
+		if( !earnedUpsideDown )
+		{
+			SoundManager.instance.PlayEffect( 5 );
+			earnedUpsideDown = true;
+		}
+		else
+			SoundManager.instance.PlayEffect( 4 );
 	}
 
 	public void LastSecondsSound()
 	{
-		//SoundManager.instance.PlayEffect( 8 );
+		SoundManager.instance.PlayEffect( 6 );
 	}
 
-	
+	public void Neutralize()
+	{
+		earnedUpsideDown = false;
+		lostUpsideDown = false;
+	}
 
 
 	#endregion

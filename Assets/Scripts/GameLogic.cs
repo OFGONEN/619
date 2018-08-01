@@ -96,6 +96,7 @@ public class GameLogic : MonoBehaviour {
 				did_putted_number = false;
 				counter_combo = 0;
 				Mouse.instance.canHit = true;
+				SoundEffectPlayer.instance.Neutralize();
 			}
 		}
 		
@@ -175,17 +176,22 @@ public class GameLogic : MonoBehaviour {
 					can_EndTurn = false;
 					SoundEffectPlayer.instance.EarnUpsideDownSound();
 				}
+				else
+					SoundEffectPlayer.instance.ScoredSound();
 
 			}
 			else
 			{
 				can_EndTurn = true;
 				UIHandler.instance.ChangeToOption( true );
+				SoundEffectPlayer.instance.ScoredSound();
 			}
-			SoundEffectPlayer.instance.ScoredSound();
+			
 		}
 		else
 		{
+			
+
 			if(!Mouse.instance.HasNumbertoPut(currentPlayer == 1 ? 2 : 1))
 			{
 				Mouse.instance.canHit = true;
@@ -203,7 +209,7 @@ public class GameLogic : MonoBehaviour {
 				can_EndTurn = true;
 				UIHandler.instance.ChangeToOption( true );
 			}
-			SoundEffectPlayer.instance.LooseUpsideDownSound();
+
 		}
 	}
 

@@ -12,6 +12,8 @@ public class InterstitialAdd : MonoBehaviour {
 	public static InterstitialAdd instance = null;
 
 	private InterstitialAd interstitial;
+
+	public bool have_interstitial;
 	#endregion
 
 	private void Awake()
@@ -32,11 +34,15 @@ public class InterstitialAdd : MonoBehaviour {
 	#region Methods
 	private void RequestInterstitial()
 	{
-		
-		#if UNITY_ANDROID
-			string adUnitId = "ca-app-pub-3940256099942544/1033173712";
 
-		#endif
+	#if UNITY_ANDROID
+        string adUnitId = "ca-app-pub-3940256099942544/1033173712";
+	#elif UNITY_IOS
+        string adUnitId = "ca-app-pub-3940256099942544/4411468910";
+	#else
+		string adUnitId = "unexpected_platform";
+	#endif
+
 
 			// Initialize an InterstitialAd.
 			interstitial = new InterstitialAd( adUnitId );
@@ -68,17 +74,30 @@ public class InterstitialAdd : MonoBehaviour {
 		}
 	 }  
 
-	
+	public void ReequestAd()
+	{
+		if( !have_interstitial )
+		{
+			AdRequest request = new AdRequest.Builder().AddTestDevice( SystemInfo.deviceUniqueIdentifier ).Build();
+			interstitial.LoadAd( request );
+		}
+	}
+
+	public bool IsAdLoaded()
+	{
+		return interstitial.IsLoaded();
+	}
 
 	public void HandleOnAdLoaded( object sender, EventArgs args )
 	{
-		MonoBehaviour.print( "HandleAdLoaded event received" );
+		have_interstitial = true;
 	}
 
 	public void HandleOnAdFailedToLoad( object sender, AdFailedToLoadEventArgs args )
 	{
-		MonoBehaviour.print( "HandleFailedToReceiveAd event received with message: "
-							+ args.Message );
+		interstitial.Destroy();
+
+		have_interstitial = false;
 	}
 
 	public void HandleOnAdOpened( object sender, EventArgs args )
