@@ -18,6 +18,8 @@ public class Counter : MonoBehaviour {
 
 	private float counter;
 	private bool canCounter;
+
+	private bool played_sound_effect;
 	#endregion
 
 	private void Awake()
@@ -41,6 +43,35 @@ public class Counter : MonoBehaviour {
 		{
 			counter -= Time.deltaTime;
 			counterText.text = "" + ( int )counter;
+			if( (int)counter == 3)
+			{
+				if( !played_sound_effect )
+				{
+					SoundEffectPlayer.instance.LastSecondsSound();
+					Debug.Log( "3" );
+					played_sound_effect = true;
+				}
+			}
+			else if((int)counter == 2)
+			{
+				if( played_sound_effect )
+				{
+					SoundEffectPlayer.instance.LastSecondsSound();
+					Debug.Log( "2" );
+					played_sound_effect = false;
+				}
+			}
+			else if((int)counter == 1)
+			{
+				if( !played_sound_effect )
+				{
+					SoundEffectPlayer.instance.LastSecondsSound();
+					Debug.Log( "1" );
+					played_sound_effect = true;
+				}
+			}
+
+
 			if( counter <= 0.05f )
 			{
 				canCounter = false;
@@ -70,11 +101,13 @@ public class Counter : MonoBehaviour {
 	public void EndOfRound()
 	{
 		counter = time_normal_round;
+		played_sound_effect = false;
 	}
 
 	public void GoUpsideDown()
 	{
 		counter = time_upsideDown_round;
+		played_sound_effect = false;
 	}
 	#endregion
 
