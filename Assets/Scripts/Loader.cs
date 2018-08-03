@@ -20,6 +20,7 @@ public class Loader : MonoBehaviour {
 
 	private void Start()
 	{
+		Screen.sleepTimeout = SleepTimeout.NeverSleep;
 		if( PlayerPrefs.GetInt( "Start" ) == 0 )
 		{
 			PlayerPrefs.SetInt( "Start", 1 );
@@ -28,6 +29,10 @@ public class Loader : MonoBehaviour {
 			PlayerPrefs.SetInt( "Table Size", 1 );
 			PlayerPrefs.SetString( "Player1 Name", "PLAYER1" );
 			PlayerPrefs.SetString( "Player2 Name", "PLAYER2" );
+			if( Application.systemLanguage == SystemLanguage.Turkish )
+				PlayerPrefs.SetInt( "Language", 1 );
+			else
+				PlayerPrefs.SetInt( "Language", 0 );
 		}
 	}
 

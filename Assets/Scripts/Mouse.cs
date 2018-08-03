@@ -382,10 +382,10 @@ public class Mouse : MonoBehaviour {
 		{
 			if( numbertoput == 6 )
 			{
-				if( player1_counter_number_6 != 0 )
+				if( player1_counter_number_6 > 0 )
 				{
-					OptionButtonTextChanger.instance.ChangeNumber( numbertoput, player1_counter_number_6 );
 					player1_counter_number_6--;
+					OptionButtonTextChanger.instance.ChangeNumber( numbertoput, player1_counter_number_6 );
 					if( player1_counter_number_6 == 0 )
 						active_numbers_player1.Remove( 6 );
 					return true;
@@ -393,10 +393,10 @@ public class Mouse : MonoBehaviour {
 			}
 			else if( numbertoput == 9 )
 			{
-				if( player1_counter_number_9 != 0 )
+				if( player1_counter_number_9 > 0 )
 				{
-					OptionButtonTextChanger.instance.ChangeNumber( numbertoput, player1_counter_number_9 );
 					player1_counter_number_9--;
+					OptionButtonTextChanger.instance.ChangeNumber( numbertoput, player1_counter_number_9 );
 					if( player1_counter_number_9 == 0 )
 						active_numbers_player1.Remove( 9 );
 					return true;
@@ -404,10 +404,10 @@ public class Mouse : MonoBehaviour {
 			}
 			else
 			{
-				if( player1_counter_number_1 != 0 )
+				if( player1_counter_number_1 > 0 )
 				{
-					OptionButtonTextChanger.instance.ChangeNumber( numbertoput, player1_counter_number_1 );
 					player1_counter_number_1--;
+					OptionButtonTextChanger.instance.ChangeNumber( numbertoput, player1_counter_number_1 );
 					if( player1_counter_number_1 == 0 )
 						active_numbers_player1.Remove( 1 );
 					return true;
@@ -418,10 +418,10 @@ public class Mouse : MonoBehaviour {
 		{
 			if( numbertoput == 6 )
 			{
-				if( player2_counter_number_6 != 0 )
+				if( player2_counter_number_6 > 0 )
 				{
-					OptionButtonTextChanger.instance.ChangeNumber( numbertoput, player2_counter_number_6 );
 					player2_counter_number_6--;
+					OptionButtonTextChanger.instance.ChangeNumber( numbertoput, player2_counter_number_6 );
 					if( player2_counter_number_6 == 0 )
 						active_numbers_player2.Remove( 6 );
 					return true;
@@ -429,10 +429,10 @@ public class Mouse : MonoBehaviour {
 			}
 			else if( numbertoput == 9 )
 			{
-				if( player2_counter_number_9 != 0 )
+				if( player2_counter_number_9 > 0 )
 				{
-					OptionButtonTextChanger.instance.ChangeNumber( numbertoput, player2_counter_number_9 );
 					player2_counter_number_9--;
+					OptionButtonTextChanger.instance.ChangeNumber( numbertoput, player2_counter_number_9 );
 					if( player2_counter_number_9 == 0 )
 						active_numbers_player2.Remove( 9 );
 					return true;
@@ -440,10 +440,10 @@ public class Mouse : MonoBehaviour {
 			}
 			else
 			{
-				if( player2_counter_number_1 != 0 )
+				if( player2_counter_number_1 > 0 )
 				{
-					OptionButtonTextChanger.instance.ChangeNumber( numbertoput, player2_counter_number_1 );
 					player2_counter_number_1--;
+					OptionButtonTextChanger.instance.ChangeNumber( numbertoput, player2_counter_number_1 );
 					if( player2_counter_number_1 == 0 )
 						active_numbers_player2.Remove( 1 );
 					return true;

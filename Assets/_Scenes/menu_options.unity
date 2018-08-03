@@ -1041,6 +1041,7 @@ GameObject:
   - component: {fileID: 820943996}
   - component: {fileID: 820943997}
   - component: {fileID: 820943998}
+  - component: {fileID: 820943999}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1133,10 +1134,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d785207e7a72a2a4b9cb0755968843f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  soundControl: 1
-  musicControl: 1
-  tableSizeControl: 1
-  playerNamesControl: 1
+  control_sound: 1
+  control_music: 1
+  control_tableSize: 1
+  control_playerNames: 1
+  control_language: 0
   soundOn: {fileID: 841244819}
   soundOff: {fileID: 1723803674}
   musicOn: {fileID: 1778612607}
@@ -1168,6 +1170,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b610c21f38681744bbbeb67887b06519, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  earnedUpsideDown: 0
+  lostUpsideDown: 0
+--- !u!114 &820943999
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 820943990}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2b5784fd3038e746b27b97bb8986f6b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &841244815
@@ -3426,6 +3441,17 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 820943998}
         m_MethodName: MainButtonSound
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 820943999}
+        m_MethodName: CallAdInTime
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

@@ -10,10 +10,11 @@ public class OptionsHandler : MonoBehaviour {
 	public static OptionsHandler instace = null;
 
 	[Header("Avaliable Buttons")]
-	public bool soundControl;
-	public bool musicControl;
-	public bool tableSizeControl;
-	public bool playerNamesControl;
+	public bool control_sound;
+	public bool control_music;
+	public bool control_tableSize;
+	public bool control_playerNames;
+	public bool control_language;
 
 
 	[Header("Buttons")]
@@ -25,6 +26,9 @@ public class OptionsHandler : MonoBehaviour {
 	public ImageChanger sizeSmall;
 	public ImageChanger sizeMedium;
 	public ImageChanger sizeBig;
+	public ImageChanger rules;
+	public ImageChanger english;
+	public ImageChanger turkish;
 
 	[Header("TextFields")]
 	public Text player1;
@@ -35,6 +39,7 @@ public class OptionsHandler : MonoBehaviour {
 	private int sound;
 	private int music;
 	private int tableSize;
+	private int language;
 	private string player1Name;
 	private string player2Name;
 	private string bufferPrefName;
@@ -74,6 +79,7 @@ public class OptionsHandler : MonoBehaviour {
 		tableSize = PlayerPrefs.GetInt( "Table Size" );
 		player1Name = PlayerPrefs.GetString( "Player1 Name" );
 		player2Name = PlayerPrefs.GetString( "Player2 Name" );
+		language = PlayerPrefs.GetInt( "Language" );
 	}
 
 
@@ -81,26 +87,47 @@ public class OptionsHandler : MonoBehaviour {
 	#region HandleButtons
 	private void HandleButtons()
 	{
-		if(soundControl)
+		if(control_sound)
 		{
 			HandleSound();
 		}
 
-		if( musicControl )
+		if( control_music )
 		{
 			HandleMusic();
 		}
 
-		if( tableSizeControl )
+		if( control_tableSize )
 		{
 			HandleTableSize();
 
 		}
 
-		if( playerNamesControl )
+		if( control_playerNames )
 		{
 			HandlePlayerNames();
 
+		}
+
+		if( control_language )
+		{
+			HandleLanguage();
+		}
+	}
+
+	private void HandleLanguage()
+	{
+		if( language == 1 )
+		{
+			rules.ChangeToNegative();
+			english.ChangeToNormal();
+			turkish.ChangeToNegative();
+		}
+		else
+		{
+			rules.ChangeToNormal();
+			english.ChangeToNegative();
+			turkish.ChangeToNormal();
 		}
 	}
 
@@ -252,9 +279,25 @@ public class OptionsHandler : MonoBehaviour {
 		sizeBig.ChangeToNegative();
 		PlayerPrefs.SetInt( "Table Size", 3 );
 	}
-	#endregion 
 
-	
+	public void ChangeLanguageToEnglish()
+	{
+		rules.ChangeToNormal();
+		english.ChangeToNegative();
+		turkish.ChangeToNormal();
+		PlayerPrefs.SetInt( "Language" , 0 );
+	}
+
+	public void ChangeLanguageToTurkish()
+	{
+		rules.ChangeToNegative();
+		english.ChangeToNormal();
+		turkish.ChangeToNegative();
+		PlayerPrefs.SetInt( "Language", 1 );
+	}
+	#endregion
+
+
 
 	#endregion
 

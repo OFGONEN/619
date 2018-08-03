@@ -2624,6 +2624,7 @@ GameObject:
   - component: {fileID: 977923839}
   - component: {fileID: 977923840}
   - component: {fileID: 977923841}
+  - component: {fileID: 977923842}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -2731,10 +2732,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d785207e7a72a2a4b9cb0755968843f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  soundControl: 1
-  musicControl: 1
-  tableSizeControl: 0
-  playerNamesControl: 0
+  control_sound: 1
+  control_music: 1
+  control_tableSize: 0
+  control_playerNames: 0
+  control_language: 0
   soundOn: {fileID: 1121039900}
   soundOff: {fileID: 1063966439}
   musicOn: {fileID: 1326885545}
@@ -2743,6 +2745,9 @@ MonoBehaviour:
   sizeSmall: {fileID: 0}
   sizeMedium: {fileID: 0}
   sizeBig: {fileID: 0}
+  rules: {fileID: 0}
+  english: {fileID: 0}
+  turkish: {fileID: 0}
   player1: {fileID: 0}
   player2: {fileID: 0}
 --- !u!95 &977923839
@@ -2788,6 +2793,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   earnedUpsideDown: 0
   lostUpsideDown: 0
+--- !u!114 &977923842
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 977923831}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2b5784fd3038e746b27b97bb8986f6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1063966435
 GameObject:
   m_ObjectHideFlags: 0
@@ -2959,6 +2975,17 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 977923841}
         m_MethodName: MainButtonSound
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 977923842}
+        m_MethodName: CallAdInTime
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3421,6 +3448,17 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 977923841}
         m_MethodName: MainButtonSound
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 977923842}
+        m_MethodName: CallAdInsta
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4694,6 +4732,17 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 977923841}
         m_MethodName: MainButtonSound
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 977923842}
+        m_MethodName: CallAdInsta
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

@@ -3,7 +3,6 @@ Created By OFGONEN
 */
 using UnityEngine;
 using GoogleMobileAds.Api;
-using System.Collections;
 using System;
 
 public class InterstitialAdd : MonoBehaviour {
@@ -13,7 +12,13 @@ public class InterstitialAdd : MonoBehaviour {
 
 	private InterstitialAd interstitial;
 
+	public int time_to_check_ad;
+	public int time_to_check_internet;
+
 	public bool have_interstitial;
+	private bool  can_show_ad;
+	private float time_for_add;
+	private float time_for_internet;
 	#endregion
 
 	private void Awake()
@@ -24,24 +29,46 @@ public class InterstitialAdd : MonoBehaviour {
 			Destroy( gameObject );
 	}
 
-
-
 	private void Start()
 	{
-			RequestInterstitial();	
+		RequestInterstitial();
+		time_for_add = 0;
+		time_for_internet = 0;
+	}
+
+	private void Update()
+	{
+
+		if(!can_show_ad &&  Time.time - time_for_add > time_to_check_ad )
+		{
+			Debug.Log( "canshowad = true" );
+			can_show_ad = true;
+		}
+
+		if( Time.time - time_for_internet > time_to_check_internet )
+		{
+			time_for_internet = Time.time;
+
+			if( !have_interstitial && Application.internetReachability != NetworkReachability.NotReachable )
+			{
+				RequestInterstitial();
+			}
+		}
+
+		
 	}
 
 	#region Methods
 	private void RequestInterstitial()
 	{
 
-	#if UNITY_ANDROID
-        string adUnitId = "ca-app-pub-3940256099942544/1033173712";
-	#elif UNITY_IOS
-        string adUnitId = "ca-app-pub-3940256099942544/4411468910";
-	#else
-		string adUnitId = "unexpected_platform";
-	#endif
+		#if UNITY_ANDROID
+           string adUnitId = "ca-app-pub-3940256099942544/1033173712";
+		#elif UNITY_IOS
+		   string adUnitId = "ca-app-pub-3940256099942544/4411468910";
+		#else
+		   string adUnitId = "unexpected_platform";
+		#endif
 
 
 			// Initialize an InterstitialAd.
@@ -66,38 +93,41 @@ public class InterstitialAdd : MonoBehaviour {
 
 
 
-	 public void ShowAdd()
+	 public void ShowAdd() // Burda Timer ' ile kontrol etmem gerek 
      {
-		if( interstitial.IsLoaded() )
+		if( can_show_ad &&  have_interstitial && interstitial.IsLoaded() )
 		{
 			interstitial.Show();
+			time_for_add = Time.time;
+			can_show_ad = false;
 		}
-	 }  
-
-	public void ReequestAd()
-	{
-		if( !have_interstitial )
+	 }
+	
+	 public void ShowAddInsta()
+	 {
+		if( have_interstitial && interstitial.IsLoaded() )
 		{
-			AdRequest request = new AdRequest.Builder().AddTestDevice( SystemInfo.deviceUniqueIdentifier ).Build();
-			interstitial.LoadAd( request );
+			interstitial.Show();
+			time_for_add = Time.time;
+			can_show_ad = false;
 		}
-	}
+	 }
 
-	public bool IsAdLoaded()
+	public void DestroyAd()
 	{
-		return interstitial.IsLoaded();
+		interstitial.Destroy();
+		have_interstitial = false;
 	}
 
 	public void HandleOnAdLoaded( object sender, EventArgs args )
 	{
 		have_interstitial = true;
+		
 	}
 
 	public void HandleOnAdFailedToLoad( object sender, AdFailedToLoadEventArgs args )
 	{
-		interstitial.Destroy();
-
-		have_interstitial = false;
+		DestroyAd();
 	}
 
 	public void HandleOnAdOpened( object sender, EventArgs args )
@@ -107,7 +137,7 @@ public class InterstitialAdd : MonoBehaviour {
 
 	public void HandleOnAdClosed( object sender, EventArgs args )
 	{
-		interstitial.Destroy();
+		DestroyAd();
 	}
 
 	public void HandleOnAdLeavingApplication( object sender, EventArgs args )
