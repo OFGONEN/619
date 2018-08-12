@@ -63,18 +63,19 @@ public class InterstitialAdd : MonoBehaviour {
 	{
 
 		#if UNITY_ANDROID
-           string adUnitId = "ca-app-pub-3940256099942544/1033173712";
+           string adUnitId = "ca-app-pub-6236652016171676/9107981258";
 		#elif UNITY_IOS
-		   string adUnitId = "ca-app-pub-3940256099942544/4411468910";
+		   string adUnitId = "ca-app-pub-6236652016171676/5720088942";
 		#else
 		   string adUnitId = "unexpected_platform";
 		#endif
 
+	
 
-			// Initialize an InterstitialAd.
-			interstitial = new InterstitialAd( adUnitId );
+		// Initialize an InterstitialAd.
+		interstitial = new InterstitialAd( adUnitId );
 
-			AdRequest request = new AdRequest.Builder().AddTestDevice( SystemInfo.deviceUniqueIdentifier ).Build();
+			AdRequest request = new AdRequest.Builder().Build();
 			// Load the interstitial with the request.
 			interstitial.LoadAd( request );
 

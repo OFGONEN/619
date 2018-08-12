@@ -1444,7 +1444,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   time_to_check_ad: 45
-  time_to_check_internet: 10
+  time_to_check_internet: 5
   have_interstitial: 0
 --- !u!1 &1957517183
 GameObject:
