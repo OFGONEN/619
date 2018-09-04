@@ -39,27 +39,27 @@ public class Loader : MonoBehaviour {
 	#region Methods
 	public void LoadMenu()
 	{
-		SceneManager.LoadScene( 0 );
+		SceneManager.LoadScene( 1 );
 	}
 
 	public void LoadLevel()
 	{
-		SceneManager.LoadScene( 1 );
+		SceneManager.LoadScene( 2 );
 	}
 
 	public void LoadHow2Play()
 	{
-		SceneManager.LoadScene( 2 );
+		SceneManager.LoadScene( 3 );
 	}
 
 	public void LoadOptions()
 	{
-		SceneManager.LoadScene( 3 );
+		SceneManager.LoadScene( 4 );
 	}
 
 	public void LoadWtfWeAre()
 	{
-		SceneManager.LoadScene( 4 );
+		SceneManager.LoadScene( 5 );
 	}
 
 	#endregion
