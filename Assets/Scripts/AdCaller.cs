@@ -11,12 +11,12 @@ public class AdCaller : MonoBehaviour {
 
 	public void CallAdInsta()
 	{
-		InterstitialAdd.instance.ShowAddInsta();
+		//InterstitialAdd.instance.ShowAddInsta();
 	}
 
 	public void CallAdInTime()
 	{
-		InterstitialAdd.instance.ShowAdd();
+		//InterstitialAdd.instance.ShowAdd();
 	}
 
 	#region Methods

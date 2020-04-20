@@ -31,32 +31,32 @@ public class InterstitialAdd : MonoBehaviour {
 
 	private void Start()
 	{
-		RequestInterstitial();
+		//RequestInterstitial();
 		time_for_add = 0;
 		time_for_internet = 0;
 	}
 
-	private void Update()
-	{
+	//private void Update()
+	//{
 
-		if(!can_show_ad &&  Time.time - time_for_add > time_to_check_ad )
-		{
-			Debug.Log( "canshowad = true" );
-			can_show_ad = true;
-		}
+	//	if(!can_show_ad &&  Time.time - time_for_add > time_to_check_ad )
+	//	{
+	//		Debug.Log( "canshowad = true" );
+	//		can_show_ad = true;
+	//	}
 
-		if( Time.time - time_for_internet > time_to_check_internet )
-		{
-			time_for_internet = Time.time;
+	//	if( Time.time - time_for_internet > time_to_check_internet )
+	//	{
+	//		time_for_internet = Time.time;
 
-			if( !have_interstitial && Application.internetReachability != NetworkReachability.NotReachable )
-			{
-				RequestInterstitial();
-			}
-		}
+	//		if( !have_interstitial && Application.internetReachability != NetworkReachability.NotReachable )
+	//		{
+	//			RequestInterstitial();
+	//		}
+	//	}
 
 		
-	}
+	//}
 
 	#region Methods
 	private void RequestInterstitial()
